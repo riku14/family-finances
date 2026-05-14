@@ -62,11 +62,11 @@ GET /api/workspaces/10/categories?type=expense
 | パラメータ | 型 | 説明 |
 |---|---|---|
 | categories | Array | カテゴリの配列 |
-| categories[].id | Integer | カテゴリID |
-| categories[].name | String | カテゴリ名 |
-| categories[].type | String | 種別 |
-| categories[].color | String | 表示色 |
-| categories[].createdAt | String | 作成日時 |
+| - id | Integer | カテゴリID |
+| - name | String | カテゴリ名 |
+| - type | String | 種別 |
+| - color | String | 表示色 |
+| - createdAt | String | 作成日時 |
 
 ---
 

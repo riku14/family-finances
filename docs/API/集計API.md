@@ -66,11 +66,11 @@ GET /api/workspaces/10/summary?yearMonth=2026-05
 | totalExpense | Integer | 支出合計 |
 | balance | Integer | 差引（収入 - 支出） |
 | categorySummaries | Array | カテゴリ別集計の配列 |
-| categorySummaries[].categoryId | Integer | カテゴリID |
-| categorySummaries[].categoryName | String | カテゴリ名 |
-| categorySummaries[].type | String | 種別 |
-| categorySummaries[].totalAmount | Integer | カテゴリ別合計金額 |
-| categorySummaries[].count | Integer | 該当件数 |
+| - categoryId | Integer | カテゴリID |
+| - categoryName | String | カテゴリ名 |
+| - type | String | 種別 |
+| - totalAmount | Integer | カテゴリ別合計金額 |
+| - count | Integer | 該当件数 |
 
 ---
 

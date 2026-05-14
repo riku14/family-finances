@@ -67,13 +67,13 @@ GET /api/workspaces/10/transactions?from=2026-05-01&to=2026-05-31&type=expense&p
 | パラメータ | 型 | 説明 |
 |---|---|---|
 | transactions | Array | 収支データの配列 |
-| transactions[].id | Integer | 収支ID |
-| transactions[].categoryId | Integer | カテゴリID |
-| transactions[].categoryName | String | カテゴリ名 |
-| transactions[].type | String | 種別 |
-| transactions[].amount | Integer | 金額 |
-| transactions[].date | String | 取引日 |
-| transactions[].memo | String | メモ |
+| - id | Integer | 収支ID |
+| - categoryId | Integer | カテゴリID |
+| - categoryName | String | カテゴリ名 |
+| - type | String | 種別 |
+| - amount | Integer | 金額 |
+| - date | String | 取引日 |
+| - memo | String | メモ |
 | pagination | Object | ページ情報 |
 | pagination.page | Integer | 現在のページ番号 |
 | pagination.limit | Integer | 1ページあたりの件数 |
