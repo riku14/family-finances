@@ -8,7 +8,7 @@
 ## エンドポイント
 
 ```http
-PUT /api/users/me
+PATCH /api/users/me
 ```
 
 ---

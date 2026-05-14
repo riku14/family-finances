@@ -1,14 +1,14 @@
-# 収支登録API
+# カテゴリ作成API
 
 ## 概要
-収支データ（収入または支出）を登録する。
+カテゴリを新規作成する。カテゴリはワークスペースごとに独立して管理される。
 
 ---
 
 ## エンドポイント
 
 ```http
-POST /api/workspaces/{workspaceId}/transactions
+POST /api/workspaces/{workspaceId}/categories
 ```
 
 ---
@@ -36,11 +36,9 @@ POST /api/workspaces/{workspaceId}/transactions
 
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
-| categoryId | Integer | ○ | カテゴリID |
+| name | String | ○ | カテゴリ名 |
 | type | String | ○ | 種別（income：収入 / expense：支出） |
-| amount | Integer | ○ | 金額（円、正の整数） |
-| date | String | ○ | 取引日（YYYY-MM-DD形式） |
-| memo | String | 任意 | メモ（最大200文字） |
+| color | String | 任意 | 表示色（HEXカラーコード） |
 
 ---
 
@@ -48,11 +46,9 @@ POST /api/workspaces/{workspaceId}/transactions
 
 ```json
 {
-  "categoryId": 1,
+  "name": "食費",
   "type": "expense",
-  "amount": 1500,
-  "date": "2026-05-14",
-  "memo": "ランチ代"
+  "color": "#FF5733"
 }
 ```
 
@@ -64,7 +60,7 @@ POST /api/workspaces/{workspaceId}/transactions
 
 #### 201 Created
 
-収支データの登録に成功した場合に返却する。
+カテゴリの作成に成功した場合に返却する。
 
 ---
 
@@ -72,13 +68,11 @@ POST /api/workspaces/{workspaceId}/transactions
 
 | パラメータ | 型 | 説明 |
 |---|---|---|
-| id | Integer | 収支ID |
+| id | Integer | カテゴリID |
 | workspaceId | Integer | 所属ワークスペースID |
-| categoryId | Integer | カテゴリID |
+| name | String | カテゴリ名 |
 | type | String | 種別 |
-| amount | Integer | 金額 |
-| date | String | 取引日 |
-| memo | String | メモ |
+| color | String | 表示色 |
 | createdAt | String | 作成日時 |
 
 ---
@@ -87,14 +81,12 @@ POST /api/workspaces/{workspaceId}/transactions
 
 ```json
 {
-  "id": 100,
+  "id": 1,
   "workspaceId": 10,
-  "categoryId": 1,
+  "name": "食費",
   "type": "expense",
-  "amount": 1500,
-  "date": "2026-05-14",
-  "memo": "ランチ代",
-  "createdAt": "2026-05-14T12:30:00"
+  "color": "#FF5733",
+  "createdAt": "2026-05-14T10:00:00Z"
 }
 ```
 
@@ -121,8 +113,8 @@ POST /api/workspaces/{workspaceId}/transactions
 
 ```json
 {
-  "errorCode": "INVALID_PARAMETER",
-  "message": "金額は1以上の整数で指定してください。"
+  "errorCode": "BAD_REQUEST",
+  "message": "カテゴリ名は必須です。"
 }
 ```
 
@@ -145,9 +137,9 @@ POST /api/workspaces/{workspaceId}/transactions
 
 ---
 
-### 404 Not Found
+### 409 Conflict
 
-指定したカテゴリが存在しない場合に返却する。
+同一ワークスペース内に同名のカテゴリが既に存在する場合に返却する。
 
 ---
 
@@ -155,7 +147,7 @@ POST /api/workspaces/{workspaceId}/transactions
 
 ```json
 {
-  "errorCode": "NOT_FOUND",
-  "message": "指定されたカテゴリが見つかりません。"
+  "errorCode": "CONFLICT",
+  "message": "同名のカテゴリが既に登録されています。"
 }
 ```

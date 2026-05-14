@@ -61,10 +61,11 @@ POST /api/auth/login
 | userName | String | 登録されているユーザーのニックネーム |
 | userId | Integer | 登録されているユーザーID |
 | createdAt | String | 登録日時 |
-| workspace | Array | ユーザーが保持しているワークスペース一覧 |
-| workspaceId | Integer | ワークスペースごとに自動採番されているID |
-| workspaceName | String | ワークスペースの表示名 |
-| type | String | ワークスペースのタイプ。個人またはグループ。 |
+| workspaces | Array | ユーザーが参加しているワークスペース一覧 |
+| - workspaceId | Integer | ワークスペースID |
+| - workspaceName | String | ワークスペース名 |
+| - type | String | 種別（PERSONAL / GROUP） |
+| - role | String | ワークスペース内権限（ADMIN / MEMBER） |
 | accessToken | String | 認証が必要なAPIを使用する際に利用するトークン |
 
 ---
@@ -76,17 +77,19 @@ POST /api/auth/login
   "email": "user@example.com",
   "userName": "user1",
   "userId": 1,
-  "createdAt": "2026-05-14T10:00:00",
-  "workspace": [
+  "createdAt": "2026-05-14T10:00:00Z",
+  "workspaces": [
     {
       "workspaceId": 1,
       "workspaceName": "個人ワークスペース",
-      "type": "PERSONAL"
+      "type": "PERSONAL",
+      "role": "ADMIN"
     },
     {
       "workspaceId": 10,
       "workspaceName": "開発チーム",
-      "type": "GROUP"
+      "type": "GROUP",
+      "role": "ADMIN"
     }
   ],
   "accessToken": "access_token_sample"

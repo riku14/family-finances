@@ -1,14 +1,14 @@
-# グループ招待API
+# ワークスペース招待API
 
 ## 概要
-指定したグループへの招待リンクを発行する。
+指定したグループワークスペースへの招待リンクを発行する。GROUPタイプのワークスペースに対してのみ有効。管理者権限が必要。
 
 ---
 
 ## エンドポイント
 
 ```http
-POST /api/groups/{groupId}/invitations
+POST /api/workspaces/{workspaceId}/invitations
 ```
 
 ---
@@ -28,7 +28,7 @@ POST /api/groups/{groupId}/invitations
 
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
-| groupId | Integer | ○ | 招待リンクを発行する対象のグループID |
+| workspaceId | Integer | ○ | 招待リンクを発行する対象のワークスペースID |
 
 ---
 
@@ -54,7 +54,7 @@ POST /api/groups/{groupId}/invitations
 
 | パラメータ | 型 | 説明 |
 |---|---|---|
-| inviteToken | String | 招待用トークン。groupIdと紐づける。 |
+| inviteToken | String | 招待用トークン。workspaceIdと紐づける。 |
 | expiresAt | String | 招待リンクの有効期限。発行から72時間後を設定する。 |
 
 ---
@@ -64,7 +64,7 @@ POST /api/groups/{groupId}/invitations
 ```json
 {
   "inviteToken": "invite_token_sample",
-  "expiresAt": "2026-05-17T10:00:00"
+  "expiresAt": "2026-05-17T10:00:00Z"
 }
 ```
 
@@ -98,7 +98,7 @@ POST /api/groups/{groupId}/invitations
 ---
 ### 403 Forbidden
 
-グループの管理者権限がない場合に返す。
+ワークスペースの管理者権限がない場合に返す。
 
 ---
 
@@ -108,6 +108,38 @@ POST /api/groups/{groupId}/invitations
 {
   "errorCode": "FORBIDDEN",
   "message": "この操作を行う権限がありません。"
+}
+```
+
+---
+### 404 Not Found
+
+指定したワークスペースが存在しない場合に返す。
+
+---
+
+### エラーレスポンス例
+
+```json
+{
+  "errorCode": "NOT_FOUND",
+  "message": "指定されたワークスペースが見つかりません。"
+}
+```
+
+---
+### 422 Unprocessable Entity
+
+対象ワークスペースがGROUPタイプではない場合に返す。
+
+---
+
+### エラーレスポンス例
+
+```json
+{
+  "errorCode": "INVALID_WORKSPACE_TYPE",
+  "message": "グループワークスペースにのみ招待リンクを発行できます。"
 }
 ```
 

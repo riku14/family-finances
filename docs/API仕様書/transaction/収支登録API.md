@@ -1,14 +1,14 @@
-# 収支編集API
+# 収支登録API
 
 ## 概要
-既存の収支データを編集する。
+収支データ（収入または支出）を登録する。
 
 ---
 
 ## エンドポイント
 
 ```http
-PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
+POST /api/workspaces/{workspaceId}/transactions
 ```
 
 ---
@@ -29,7 +29,6 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | workspaceId | Integer | ○ | 対象ワークスペースのID |
-| transactionId | Integer | ○ | 編集対象の収支ID |
 
 ---
 
@@ -38,7 +37,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | categoryId | Integer | ○ | カテゴリID |
-| type | String | ○ | 種別（income / expense） |
+| type | String | ○ | 種別（income：収入 / expense：支出） |
 | amount | Integer | ○ | 金額（円、正の整数） |
 | date | String | ○ | 取引日（YYYY-MM-DD形式） |
 | memo | String | 任意 | メモ（最大200文字） |
@@ -49,11 +48,11 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 
 ```json
 {
-  "categoryId": 2,
+  "categoryId": 1,
   "type": "expense",
-  "amount": 2000,
+  "amount": 1500,
   "date": "2026-05-14",
-  "memo": "夕食代に変更"
+  "memo": "ランチ代"
 }
 ```
 
@@ -63,9 +62,9 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 
 ### 成功時
 
-#### 200 OK
+#### 201 Created
 
-収支データの更新に成功した場合に返却する。
+収支データの登録に成功した場合に返却する。
 
 ---
 
@@ -80,7 +79,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 | amount | Integer | 金額 |
 | date | String | 取引日 |
 | memo | String | メモ |
-| updatedAt | String | 更新日時 |
+| createdAt | String | 作成日時 |
 
 ---
 
@@ -90,12 +89,12 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 {
   "id": 100,
   "workspaceId": 10,
-  "categoryId": 2,
+  "categoryId": 1,
   "type": "expense",
-  "amount": 2000,
+  "amount": 1500,
   "date": "2026-05-14",
-  "memo": "夕食代に変更",
-  "updatedAt": "2026-05-14T13:00:00"
+  "memo": "ランチ代",
+  "createdAt": "2026-05-14T12:30:00Z"
 }
 ```
 
@@ -122,7 +121,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 
 ```json
 {
-  "errorCode": "INVALID_PARAMETER",
+  "errorCode": "BAD_REQUEST",
   "message": "金額は1以上の整数で指定してください。"
 }
 ```
@@ -148,7 +147,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 
 ### 404 Not Found
 
-指定した収支データまたはカテゴリが存在しない場合に返却する。
+指定したカテゴリが存在しない場合に返却する。
 
 ---
 
@@ -157,6 +156,6 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 ```json
 {
   "errorCode": "NOT_FOUND",
-  "message": "指定された収支データが見つかりません。"
+  "message": "指定されたカテゴリが見つかりません。"
 }
 ```

@@ -8,7 +8,7 @@
 ## エンドポイント
 
 ```http
-GET /api/users
+GET /api/users/me
 ```
 
 ---

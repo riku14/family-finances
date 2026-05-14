@@ -1,14 +1,14 @@
-# カテゴリ削除API
+# 収支削除API
 
 ## 概要
-使用しなくなったカテゴリを削除する。バックエンドでは論理削除（deletedAtフラグ）として扱う。
+収支データを削除する。バックエンドでは論理削除（deletedAtフラグ）として扱う。
 
 ---
 
 ## エンドポイント
 
 ```http
-DELETE /api/workspaces/{workspaceId}/categories/{categoryId}
+DELETE /api/workspaces/{workspaceId}/transactions/{transactionId}
 ```
 
 ---
@@ -28,14 +28,14 @@ DELETE /api/workspaces/{workspaceId}/categories/{categoryId}
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | workspaceId | Integer | ○ | 対象ワークスペースのID |
-| categoryId | Integer | ○ | 削除対象のカテゴリID |
+| transactionId | Integer | ○ | 削除対象の収支ID |
 
 ---
 
 ### リクエスト例
 
 ```http
-DELETE /api/workspaces/10/categories/1
+DELETE /api/workspaces/10/transactions/100
 ```
 
 ---
@@ -46,7 +46,7 @@ DELETE /api/workspaces/10/categories/1
 
 #### 204 No Content
 
-論理削除に成功した場合に返却する。レスポンスボディはなし。
+削除に成功した場合に返却する。レスポンスボディはなし。
 
 ---
 
@@ -80,7 +80,7 @@ DELETE /api/workspaces/10/categories/1
 
 ### 404 Not Found
 
-指定したカテゴリが存在しない、または既に削除済みの場合に返却する。
+指定した収支データが存在しない、または既に削除済みの場合に返却する。
 
 ---
 
@@ -89,23 +89,6 @@ DELETE /api/workspaces/10/categories/1
 ```json
 {
   "errorCode": "NOT_FOUND",
-  "message": "指定されたカテゴリが見つかりません。"
-}
-```
-
----
-
-### 409 Conflict
-
-該当カテゴリに紐づく収支データが存在し削除できない場合に返却する。（運用方針によっては不要）
-
----
-
-### エラーレスポンス例
-
-```json
-{
-  "errorCode": "CONFLICT",
-  "message": "このカテゴリは収支データで使用されているため削除できません。"
+  "message": "指定された収支データが見つかりません。"
 }
 ```

@@ -1,14 +1,14 @@
-# カテゴリ作成API
+# カテゴリ編集API
 
 ## 概要
-カテゴリを新規作成する。カテゴリはワークスペースごとに独立して管理される。
+既存のカテゴリを編集する。
 
 ---
 
 ## エンドポイント
 
 ```http
-POST /api/workspaces/{workspaceId}/categories
+PUT /api/workspaces/{workspaceId}/categories/{categoryId}
 ```
 
 ---
@@ -29,6 +29,7 @@ POST /api/workspaces/{workspaceId}/categories
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | workspaceId | Integer | ○ | 対象ワークスペースのID |
+| categoryId | Integer | ○ | 編集対象のカテゴリID |
 
 ---
 
@@ -46,9 +47,9 @@ POST /api/workspaces/{workspaceId}/categories
 
 ```json
 {
-  "name": "食費",
+  "name": "外食費",
   "type": "expense",
-  "color": "#FF5733"
+  "color": "#FFA500"
 }
 ```
 
@@ -58,9 +59,9 @@ POST /api/workspaces/{workspaceId}/categories
 
 ### 成功時
 
-#### 201 Created
+#### 200 OK
 
-カテゴリの作成に成功した場合に返却する。
+カテゴリの更新に成功した場合に返却する。
 
 ---
 
@@ -73,7 +74,7 @@ POST /api/workspaces/{workspaceId}/categories
 | name | String | カテゴリ名 |
 | type | String | 種別 |
 | color | String | 表示色 |
-| createdAt | String | 作成日時 |
+| updatedAt | String | 更新日時 |
 
 ---
 
@@ -83,10 +84,10 @@ POST /api/workspaces/{workspaceId}/categories
 {
   "id": 1,
   "workspaceId": 10,
-  "name": "食費",
+  "name": "外食費",
   "type": "expense",
-  "color": "#FF5733",
-  "createdAt": "2026-05-14T10:00:00"
+  "color": "#FFA500",
+  "updatedAt": "2026-05-14T11:00:00Z"
 }
 ```
 
@@ -100,20 +101,11 @@ POST /api/workspaces/{workspaceId}/categories
 
 ---
 
-### エラーレスポンスパラメータ
-
-| パラメータ | 型 | 説明 |
-|---|---|---|
-| errorCode | String | エラーコード |
-| message | String | エラーメッセージ |
-
----
-
 ### エラーレスポンス例
 
 ```json
 {
-  "errorCode": "INVALID_PARAMETER",
+  "errorCode": "BAD_REQUEST",
   "message": "カテゴリ名は必須です。"
 }
 ```
@@ -132,6 +124,23 @@ POST /api/workspaces/{workspaceId}/categories
 {
   "errorCode": "UNAUTHORIZED",
   "message": "認証に失敗しました。"
+}
+```
+
+---
+
+### 404 Not Found
+
+指定したカテゴリが存在しない場合に返却する。
+
+---
+
+### エラーレスポンス例
+
+```json
+{
+  "errorCode": "NOT_FOUND",
+  "message": "指定されたカテゴリが見つかりません。"
 }
 ```
 

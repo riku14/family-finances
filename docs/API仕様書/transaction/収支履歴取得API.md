@@ -10,7 +10,7 @@
 ## エンドポイント
 
 ```http
-GET /api/v1/workspaces/{workspaceId}/transactions
+GET /api/workspaces/{workspaceId}/transactions
 ```
 
 ---
@@ -44,7 +44,7 @@ GET /api/v1/workspaces/{workspaceId}/transactions
 ### リクエスト例
 
 ```http
-GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
+GET /api/workspaces/10/transactions?yearMonth=2026-05
 ```
 
 ---
@@ -66,16 +66,16 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
 |---|---|---|
 | yearMonth | String | 対象年月 |
 | transactions | Array | 収支データの配列（日付降順） |
-| transactions[].id | Integer | 収支ID |
-| transactions[].categoryId | Integer | カテゴリID |
-| transactions[].categoryName | String | カテゴリ名 |
-| transactions[].categoryColor | String | カテゴリ表示色 |
-| transactions[].type | String | 種別（income / expense） |
-| transactions[].amount | Integer | 金額 |
-| transactions[].date | String | 取引日 |
-| transactions[].memo | String | メモ |
-| transactions[].registeredBy | String | 登録者名 |
-| transactions[].createdAt | String | 作成日時 |
+| - id | Integer | 収支ID |
+| - categoryId | Integer | カテゴリID |
+| - categoryName | String | カテゴリ名 |
+| - categoryColor | String | カテゴリ表示色 |
+| - type | String | 種別（income / expense） |
+| - amount | Integer | 金額 |
+| - date | String | 取引日 |
+| - memo | String | メモ |
+| - registeredBy | String | 登録者名 |
+| - createdAt | String | 作成日時 |
 
 ---
 
@@ -95,7 +95,7 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
       "date": "2026-05-25",
       "memo": "5月給与",
       "registeredBy": "太郎",
-      "createdAt": "2026-05-25T09:00:00"
+      "createdAt": "2026-05-25T09:00:00Z"
     },
     {
       "id": 104,
@@ -107,7 +107,7 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
       "date": "2026-05-10",
       "memo": "薬局",
       "registeredBy": "太郎",
-      "createdAt": "2026-05-10T18:30:00"
+      "createdAt": "2026-05-10T18:30:00Z"
     },
     {
       "id": 103,
@@ -119,7 +119,7 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
       "date": "2026-05-08",
       "memo": "スマホ料金",
       "registeredBy": "太郎",
-      "createdAt": "2026-05-08T20:00:00"
+      "createdAt": "2026-05-08T20:00:00Z"
     },
     {
       "id": 102,
@@ -131,7 +131,7 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
       "date": "2026-05-05",
       "memo": "スーパー食材",
       "registeredBy": "太郎",
-      "createdAt": "2026-05-05T19:15:00"
+      "createdAt": "2026-05-05T19:15:00Z"
     },
     {
       "id": 101,
@@ -143,7 +143,7 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
       "date": "2026-05-02",
       "memo": "ランチ",
       "registeredBy": "太郎",
-      "createdAt": "2026-05-02T12:30:00"
+      "createdAt": "2026-05-02T12:30:00Z"
     },
     {
       "id": 100,
@@ -155,7 +155,7 @@ GET /api/v1/workspaces/10/transactions?yearMonth=2026-05
       "date": "2026-05-02",
       "memo": "交通費チャージ",
       "registeredBy": "太郎",
-      "createdAt": "2026-05-02T08:00:00"
+      "createdAt": "2026-05-02T08:00:00Z"
     }
   ]
 }
@@ -184,7 +184,7 @@ yearMonthが未指定、または形式が不正な場合に返却する。
 
 ```json
 {
-  "errorCode": "INVALID_PARAMETER",
+  "errorCode": "BAD_REQUEST",
   "message": "yearMonthはYYYY-MM形式で指定してください。"
 }
 ```

@@ -140,7 +140,7 @@ CHECK (status IN ('ACTIVE', 'LEFT'))
 | workspace_id | BIGINT      | NOT NULL, FK→workspaces.id | 所属ワークスペース                    |
 | name         | VARCHAR(50) | NOT NULL                   | カテゴリ名                            |
 | color        | VARCHAR(7)  | NOT NULL                   | 表示色（#RRGGBB形式）                 |
-| type         | VARCHAR(20) | NOT NULL                   | 用途（'INCOME' / 'EXPENSE' / 'BOTH'） |
+| type         | VARCHAR(20) | NOT NULL                   | 用途（'INCOME' / 'EXPENSE'） |
 | created_at   | TIMESTAMP   | NOT NULL                   | 作成日時                              |
 | updated_at   | TIMESTAMP   | NOT NULL                   | 更新日時                              |
 | deleted_at   | TIMESTAMP   | NULL                       | 論理削除日時                          |
@@ -151,7 +151,7 @@ CHECK (status IN ('ACTIVE', 'LEFT'))
 
 **CHECK制約**
 ```sql
-CHECK (type IN ('INCOME', 'EXPENSE', 'BOTH'))
+CHECK (type IN ('INCOME', 'EXPENSE'))
 ```
 
 ---
