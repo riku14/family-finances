@@ -49,7 +49,10 @@ POST /api/groups/join
 |---|---|---|
 | workspaceId | Integer | ワークスペースID。以降の収支編集、画面切り替え等に利用する。 |
 | groupName | String | グループ名 |
-| groupMember | Array | グループに所属しているメンバー一覧 |
+| groupMembers | Array | グループに所属しているメンバー一覧 |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ userId | Integer | メンバーのユーザーID |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ userName | String | メンバーの表示名（ニックネーム） |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ role | String | グループ内での権限（ADMIN / MEMBER など） |
 
 ---
 

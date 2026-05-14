@@ -8,7 +8,7 @@
 ## エンドポイント
 
 ```http
-POST /api/users/logout
+POST /api/auth/logout
 ```
 
 ---

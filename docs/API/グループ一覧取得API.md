@@ -39,10 +39,10 @@ GET /api/groups
 | パラメータ | 型 | 説明 |
 |---|---|---|
 | groupList | Array | グループ一覧 |
-| groupId | Integer | グループID |
-| groupName | String | グループ名 |
-| role | String | グループ内の権限 |
-| workspaceId | Integer | ワークスペースID |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ groupId | Integer | グループID |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ groupName | String | グループ名 |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ role | String | グループ内の権限 |
+| &nbsp;&nbsp;&nbsp;&nbsp;└ workspaceId | Integer | ワークスペースID |
 
 ---
 
