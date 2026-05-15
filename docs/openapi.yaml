@@ -1,0 +1,127 @@
+openapi: "3.0.3"
+info:
+  title: "会計簿アプリAPI "
+  version: "1.0.0"
+servers:
+  - url: http://localhost:4010
+    description: モックサーバー(Prism)
+  - url: http://localhost:8089
+    description: ローカル開発環境(Java実装)
+tags:
+  - name: auth
+    description: 認証
+  - name: users
+    description: ユーザー
+  - name: workspaces
+    description: ワークスペース
+  - name: transactions
+    description: 収支
+  - name: categories
+    description: カテゴリー
+security:
+  - bearerAuth: []
+
+paths:
+  /api/users:
+    post:
+      tags:
+        - users
+      summary: ユーザー登録
+      description: 新規ユーザーを登録する
+      security: [] # 認証不要
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@example.com
+                password:
+                  type: string
+                  format: password
+                  example: "Password"
+                userName:
+                  type: string
+                  example: 管理者太郎
+      responses:
+        "201":
+          description: "ユーザー登録成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: admin@example.com
+                  userName:
+                    type: string
+                    example: 管理者太郎
+                  userId:
+                    type: integer
+                    example: 1
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2026-05-14T10:00:00Z"
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiJ9..."
+                  workspaces:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        workspaceId:
+                          type: integer
+                          example: 1
+                        workspaceName:
+                          type: string
+                          example: 個人ワークスペース
+                        type:
+                          type: string
+                          example: PERSONAL
+                        role:
+                          type: string
+                          example: ADMIN
+        "400":
+          description: "メールアドレスまたはパスワードが未入力"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: "メールアドレスが既に使用されている"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "ALREADY_EXISTS"
+        message:
+          type: string
+          example: "このメールアドレスは既に登録されています。"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

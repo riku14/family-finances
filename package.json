@@ -1,0 +1,17 @@
+{
+  "name": "family-finances",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "docs": "swagger-ui-watcher docs/openapi.yaml",
+    "mock": "prism mock docs/openapi.yaml",
+    "gen:types": "openapi-typescript docs/openapi.yaml -o frontend/src/types/api.d.ts",
+    "gen:java": "openapi-generator-cli generate -i docs/openapi.yaml -g spring -o backend/src/main/java/generated --model-package com.example.generated.model --api-package com.example.generated.api"
+  },
+  "devDependencies": {
+    "@stoplight/prism-cli": "latest",
+    "openapi-typescript": "latest",
+    "swagger-ui-watcher": "latest",
+    "@openapitools/openapi-generator-cli": "latest"
+  }
+}
