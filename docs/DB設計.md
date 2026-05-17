@@ -175,7 +175,7 @@ CHECK (type IN ('INCOME', 'EXPENSE'))
 | workspace_id     | BIGINT        | NOT NULL, FK→workspaces.id | 登録先ワークスペース                 |
 | user_id          | BIGINT        | NOT NULL, FK→users.id      | 登録者                        |
 | category_id      | BIGINT        | NOT NULL, FK→categories.id | カテゴリ                       |
-| amount           | DECIMAL(12,2) | NOT NULL                   | 金額（常に正の数）                  |
+| amount           | INTEGER       | NOT NULL                   | 金額（円単位、常に正の整数）          |
 | transaction_type | VARCHAR(10)   | NOT NULL                   | 収支区分（'INCOME' / 'EXPENSE'） |
 | transaction_date | DATE          | NOT NULL                   | 取引日                        |
 | memo             | VARCHAR(500)  | NULL                       | メモ                         |
@@ -193,7 +193,7 @@ CHECK (type IN ('INCOME', 'EXPENSE'))
 
 ```sql
 CHECK (transaction_type IN ('INCOME', 'EXPENSE'))
-CHECK (amount >= 0)
+CHECK (amount > 0)
 ```
 
 ---
@@ -216,7 +216,7 @@ erDiagram
         bigint id PK
         varchar email UK
         varchar password_hash
-        varchar display_name
+        varchar name
         varchar system_role
         timestamp created_at
         timestamp updated_at
@@ -258,7 +258,7 @@ erDiagram
         bigint workspace_id FK
         varchar name
         varchar color
-        varchar type "INCOME/EXPENSE/BOTH"
+        varchar type "INCOME/EXPENSE"
         timestamp created_at
         timestamp updated_at
         timestamp deleted_at
@@ -269,7 +269,7 @@ erDiagram
         bigint workspace_id FK
         bigint user_id FK
         bigint category_id FK
-        decimal amount
+        integer amount
         varchar transaction_type "INCOME/EXPENSE"
         date transaction_date
         varchar memo

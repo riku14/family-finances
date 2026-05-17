@@ -38,7 +38,7 @@ PUT /api/workspaces/{workspaceId}/categories/{categoryId}
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | name | String | ○ | カテゴリ名 |
-| type | String | ○ | 種別（income：収入 / expense：支出） |
+| type | String | ○ | 種別（INCOME：収入 / EXPENSE：支出） |
 | color | String | 任意 | 表示色（HEXカラーコード） |
 
 ---
@@ -48,7 +48,7 @@ PUT /api/workspaces/{workspaceId}/categories/{categoryId}
 ```json
 {
   "name": "外食費",
-  "type": "expense",
+  "type": "EXPENSE",
   "color": "#FFA500"
 }
 ```
@@ -85,7 +85,7 @@ PUT /api/workspaces/{workspaceId}/categories/{categoryId}
   "id": 1,
   "workspaceId": 10,
   "name": "外食費",
-  "type": "expense",
+  "type": "EXPENSE",
   "color": "#FFA500",
   "updatedAt": "2026-05-14T11:00:00Z"
 }
