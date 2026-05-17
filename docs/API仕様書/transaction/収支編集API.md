@@ -38,7 +38,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | categoryId | Integer | ○ | カテゴリID |
-| type | String | ○ | 種別（income / expense） |
+| type | String | ○ | 種別（INCOME / EXPENSE） |
 | amount | Integer | ○ | 金額（円、正の整数） |
 | date | String | ○ | 取引日（YYYY-MM-DD形式） |
 | memo | String | 任意 | メモ（最大200文字） |
@@ -50,7 +50,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
 ```json
 {
   "categoryId": 2,
-  "type": "expense",
+  "type": "EXPENSE",
   "amount": 2000,
   "date": "2026-05-14",
   "memo": "夕食代に変更"
@@ -91,7 +91,7 @@ PUT /api/workspaces/{workspaceId}/transactions/{transactionId}
   "id": 100,
   "workspaceId": 10,
   "categoryId": 2,
-  "type": "expense",
+  "type": "EXPENSE",
   "amount": 2000,
   "date": "2026-05-14",
   "memo": "夕食代に変更",

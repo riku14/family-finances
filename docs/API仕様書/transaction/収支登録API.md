@@ -37,7 +37,7 @@ POST /api/workspaces/{workspaceId}/transactions
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
 | categoryId | Integer | ○ | カテゴリID |
-| type | String | ○ | 種別（income：収入 / expense：支出） |
+| type | String | ○ | 種別（INCOME：収入 / EXPENSE：支出） |
 | amount | Integer | ○ | 金額（円、正の整数） |
 | date | String | ○ | 取引日（YYYY-MM-DD形式） |
 | memo | String | 任意 | メモ（最大200文字） |
@@ -49,7 +49,7 @@ POST /api/workspaces/{workspaceId}/transactions
 ```json
 {
   "categoryId": 1,
-  "type": "expense",
+  "type": "EXPENSE",
   "amount": 1500,
   "date": "2026-05-14",
   "memo": "ランチ代"
@@ -90,7 +90,7 @@ POST /api/workspaces/{workspaceId}/transactions
   "id": 100,
   "workspaceId": 10,
   "categoryId": 1,
-  "type": "expense",
+  "type": "EXPENSE",
   "amount": 1500,
   "date": "2026-05-14",
   "memo": "ランチ代",

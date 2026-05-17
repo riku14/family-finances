@@ -35,14 +35,14 @@ GET /api/workspaces/{workspaceId}/categories
 
 | パラメータ | 型 | 必須 | 説明 |
 |---|---|---|---|
-| type | String | 任意 | 種別での絞り込み（income / expense） |
+| type | String | 任意 | 種別での絞り込み（INCOME / EXPENSE） |
 
 ---
 
 ### リクエスト例
 
 ```http
-GET /api/workspaces/10/categories?type=expense
+GET /api/workspaces/10/categories?type=EXPENSE
 ```
 
 ---
@@ -78,14 +78,14 @@ GET /api/workspaces/10/categories?type=expense
     {
       "id": 1,
       "name": "食費",
-      "type": "expense",
+      "type": "EXPENSE",
       "color": "#FF5733",
       "createdAt": "2026-05-14T10:00:00"
     },
     {
       "id": 2,
       "name": "交通費",
-      "type": "expense",
+      "type": "EXPENSE",
       "color": "#3498DB",
       "createdAt": "2026-05-14T10:05:00"
     }

@@ -22,13 +22,96 @@ security:
   - bearerAuth: []
 
 paths:
+  # auth
+  /api/auth/login:
+    post:
+      tags:
+        - auth
+      summary: ログイン
+      description: メールアドレスとパスワードを確認し、アクセストークンを発行する
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
+      responses:
+        "200":
+          description: "ログイン成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: "メールアドレスまたはパスワードが未入力"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "パスワードが誤っている"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "アカウントが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/auth/logout:
+    post:
+      tags:
+        - auth
+      summary: ログアウト
+      description: 現在のトークンを削除し、ログアウトする
+      responses:
+        "200":
+          description: "ログアウト成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "ログアウトしました。"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # users
   /api/users:
     post:
       tags:
         - users
       summary: ユーザー登録
-      description: 新規ユーザーを登録する
-      security: [] # 認証不要
+      description: 新規ユーザーを登録する。登録完了後は自動的にログイン状態となり、個人ワークスペースを自動生成する
+      security: []
       requestBody:
         required: true
         content:
@@ -47,7 +130,7 @@ paths:
                   type: string
                   format: password
                   example: "Password"
-                userName:
+                name:
                   type: string
                   example: 管理者太郎
       responses:
@@ -56,41 +139,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  email:
-                    type: string
-                    example: admin@example.com
-                  userName:
-                    type: string
-                    example: 管理者太郎
-                  userId:
-                    type: integer
-                    example: 1
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: "2026-05-14T10:00:00Z"
-                  accessToken:
-                    type: string
-                    example: "eyJhbGciOiJIUzI1NiJ9..."
-                  workspaces:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        workspaceId:
-                          type: integer
-                          example: 1
-                        workspaceName:
-                          type: string
-                          example: 個人ワークスペース
-                        type:
-                          type: string
-                          example: PERSONAL
-                        role:
-                          type: string
-                          example: ADMIN
+                $ref: "#/components/schemas/AuthResponse"
         "400":
           description: "メールアドレスまたはパスワードが未入力"
           content:
@@ -109,36 +158,696 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+
   /api/users/me:
     get:
       tags:
         - users
-      summary: ユーザー情報取得（自分）
+      summary: ユーザー情報取得
       description: ログインユーザーの情報を取得する
       responses:
         "200":
-          description: ユーザー情報取得成功
+          description: "ユーザー情報取得成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      tags:
+        - users
+      summary: プロフィール更新
+      description: ログインユーザーの表示名を更新する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: 新しいユーザー名
+      responses:
+        "200":
+          description: "プロフィール更新成功"
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  email:
+                  name:
                     type: string
-                    example: user@example.com
-                  userName:
-                    type: integer
-                    example: user1
-                  userId:
-                    type: integer
-                    example: 1
+                    example: 新しいユーザー名
+        "400":
+          description: "nameが未入力"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: "認証失敗"
           content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/ErrorResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/users/me/password:
+    patch:
+      tags:
+        - users
+      summary: パスワード変更
+      description: ログインユーザーのパスワードを変更する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentPassword
+                - newPassword
+              properties:
+                currentPassword:
+                  type: string
+                  format: password
+                  example: "currentPassword123"
+                newPassword:
+                  type: string
+                  format: password
+                  example: "newPassword123"
+      responses:
+        "200":
+          description: "パスワード変更成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "パスワードの変更が完了しました。"
+        "400":
+          description: "currentPasswordまたはnewPasswordが未入力"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # workspaces
+  /api/workspaces:
+    get:
+      tags:
+        - workspaces
+      summary: ワークスペース一覧取得
+      description: ログインユーザーが参加しているワークスペース一覧を取得する
+      parameters:
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [PERSONAL, GROUP]
+          description: 種別での絞り込み
+      responses:
+        "200":
+          description: "取得成功（0件の場合は空配列）"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workspaces:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/WorkspaceSummary"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - workspaces
+      summary: ワークスペース作成
+      description: グループワークスペースを作成する。作成者は管理者となる
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 開発チーム
+                  description: 未入力の場合は "Group" をデフォルト名とする
+      responses:
+        "201":
+          description: "ワークスペース作成成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceDetail"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/workspaces/{workspaceId}/invitations:
+    post:
+      tags:
+        - workspaces
+      summary: ワークスペース招待リンク発行
+      description: グループワークスペースへの招待リンクを発行する。管理者権限が必要
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201":
+          description: "招待リンク発行成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inviteToken:
+                    type: string
+                    example: "invite_token_sample"
+                  expiresAt:
+                    type: string
+                    format: date-time
+                    example: "2026-05-20T10:00:00Z"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: "管理者権限がない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "ワークスペースが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "GROUPタイプ以外のワークスペースへの招待"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/workspaces/invitations/accept:
+    post:
+      tags:
+        - workspaces
+      summary: ワークスペース参加
+      description: 招待トークンを使用してグループワークスペースに参加する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - inviteToken
+              properties:
+                inviteToken:
+                  type: string
+                  example: "invite_token_sample"
+      responses:
+        "201":
+          description: "ワークスペース参加成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceDetail"
+        "400":
+          description: "inviteTokenが未入力"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "招待トークンが無効または期限切れ"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: "既に参加済み"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # categories
+  /api/workspaces/{workspaceId}/categories:
+    get:
+      tags:
+        - categories
+      summary: カテゴリ一覧取得
+      description: 指定ワークスペースのカテゴリ一覧を取得する（論理削除済みは除く）
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [INCOME, EXPENSE]
+          description: 種別での絞り込み
+      responses:
+        "200":
+          description: "取得成功（0件の場合は空配列）"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CategoryResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "ワークスペースが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - categories
+      summary: カテゴリ作成
+      description: 指定ワークスペースにカテゴリを新規作成する
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - type
+              properties:
+                name:
+                  type: string
+                  example: 食費
+                type:
+                  type: string
+                  enum: [INCOME, EXPENSE]
+                  example: EXPENSE
+                color:
+                  type: string
+                  example: "#FF5733"
+      responses:
+        "201":
+          description: "カテゴリ作成成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponse"
+        "400":
+          description: "リクエストパラメータが不正"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: "同名のカテゴリが既に存在する"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/workspaces/{workspaceId}/categories/{categoryId}:
+    put:
+      tags:
+        - categories
+      summary: カテゴリ編集
+      description: 既存のカテゴリを編集する
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+        - $ref: "#/components/parameters/categoryId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - type
+              properties:
+                name:
+                  type: string
+                  example: 外食費
+                type:
+                  type: string
+                  enum: [INCOME, EXPENSE]
+                  example: EXPENSE
+                color:
+                  type: string
+                  example: "#FFA500"
+      responses:
+        "200":
+          description: "カテゴリ更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponse"
+        "400":
+          description: "リクエストパラメータが不正"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "カテゴリが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: "同名のカテゴリが既に存在する"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - categories
+      summary: カテゴリ削除
+      description: カテゴリを論理削除する
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+        - $ref: "#/components/parameters/categoryId"
+      responses:
+        "204":
+          description: "削除成功（レスポンスボディなし）"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "カテゴリが存在しない、または既に削除済み"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # transactions
+  /api/workspaces/{workspaceId}/transactions:
+    get:
+      tags:
+        - transactions
+      summary: 収支履歴取得
+      description: 指定した月の収支データを全件取得する（日付降順）
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+        - name: yearMonth
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "2026-05"
+          description: 対象年月（YYYY-MM形式）
+      responses:
+        "200":
+          description: "取得成功（0件の場合はtransactionsが空配列）"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  yearMonth:
+                    type: string
+                    example: "2026-05"
+                  transactions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: "yearMonthが未指定または形式不正"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "ワークスペースが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - transactions
+      summary: 収支登録
+      description: 収支データを登録する
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - categoryId
+                - type
+                - amount
+                - date
+              properties:
+                categoryId:
+                  type: integer
+                  example: 1
+                type:
+                  type: string
+                  enum: [INCOME, EXPENSE]
+                  example: EXPENSE
+                amount:
+                  type: integer
+                  example: 1500
+                date:
+                  type: string
+                  format: date
+                  example: "2026-05-14"
+                memo:
+                  type: string
+                  example: "ランチ代"
+      responses:
+        "201":
+          description: "収支登録成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: "リクエストパラメータが不正"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "カテゴリが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/workspaces/{workspaceId}/transactions/{transactionId}:
+    put:
+      tags:
+        - transactions
+      summary: 収支編集
+      description: 既存の収支データを編集する
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+        - $ref: "#/components/parameters/transactionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - categoryId
+                - type
+                - amount
+                - date
+              properties:
+                categoryId:
+                  type: integer
+                  example: 2
+                type:
+                  type: string
+                  enum: [INCOME, EXPENSE]
+                  example: EXPENSE
+                amount:
+                  type: integer
+                  example: 2000
+                date:
+                  type: string
+                  format: date
+                  example: "2026-05-14"
+                memo:
+                  type: string
+                  example: "夕食代に変更"
+      responses:
+        "200":
+          description: "収支更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: "リクエストパラメータが不正"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "収支データまたはカテゴリが存在しない"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - transactions
+      summary: 収支削除
+      description: 収支データを論理削除する
+      parameters:
+        - $ref: "#/components/parameters/workspaceId"
+        - $ref: "#/components/parameters/transactionId"
+      responses:
+        "204":
+          description: "削除成功（レスポンスボディなし）"
+        "401":
+          description: "認証失敗"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: "収支データが存在しない、または既に削除済み"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
+  parameters:
+    workspaceId:
+      name: workspaceId
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 10
+      description: ワークスペースID
+    categoryId:
+      name: categoryId
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+      description: カテゴリID
+    transactionId:
+      name: transactionId
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 100
+      description: 収支ID
+
   schemas:
     ErrorResponse:
       type: object
@@ -149,6 +858,158 @@ components:
         message:
           type: string
           example: "このメールアドレスは既に登録されています。"
+
+    UserResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: user@example.com
+        name:
+          type: string
+          example: 管理者太郎
+
+    AuthResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: user@example.com
+        name:
+          type: string
+          example: 管理者太郎
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-05-14T10:00:00Z"
+        accessToken:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiJ9..."
+        workspaces:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkspaceSummary"
+
+    WorkspaceSummary:
+      type: object
+      properties:
+        workspaceId:
+          type: integer
+          example: 1
+        workspaceName:
+          type: string
+          example: 個人ワークスペース
+        type:
+          type: string
+          enum: [PERSONAL, GROUP]
+          example: PERSONAL
+        role:
+          type: string
+          enum: [ADMIN, MEMBER]
+          example: ADMIN
+
+    WorkspaceMember:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: user1
+        role:
+          type: string
+          enum: [ADMIN, MEMBER]
+          example: ADMIN
+
+    WorkspaceDetail:
+      type: object
+      properties:
+        workspaceId:
+          type: integer
+          example: 10
+        workspaceName:
+          type: string
+          example: 開発チーム
+        type:
+          type: string
+          enum: [GROUP]
+          example: GROUP
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkspaceMember"
+
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        workspaceId:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: 食費
+        type:
+          type: string
+          enum: [INCOME, EXPENSE]
+          example: EXPENSE
+        color:
+          type: string
+          example: "#FF5733"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-05-14T10:00:00Z"
+
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 100
+        workspaceId:
+          type: integer
+          example: 10
+        categoryId:
+          type: integer
+          example: 1
+        categoryName:
+          type: string
+          example: 食費
+        categoryColor:
+          type: string
+          example: "#FF5733"
+        type:
+          type: string
+          enum: [INCOME, EXPENSE]
+          example: EXPENSE
+        amount:
+          type: integer
+          example: 1500
+        date:
+          type: string
+          format: date
+          example: "2026-05-14"
+        memo:
+          type: string
+          example: "ランチ代"
+        registeredBy:
+          type: string
+          example: "管理者太郎"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-05-14T12:30:00Z"
+
   securitySchemes:
     bearerAuth:
       type: http

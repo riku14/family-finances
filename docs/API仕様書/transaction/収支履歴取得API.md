@@ -70,7 +70,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
 | - categoryId | Integer | カテゴリID |
 | - categoryName | String | カテゴリ名 |
 | - categoryColor | String | カテゴリ表示色 |
-| - type | String | 種別（income / expense） |
+| - type | String | 種別（INCOME / EXPENSE） |
 | - amount | Integer | 金額 |
 | - date | String | 取引日 |
 | - memo | String | メモ |
@@ -90,7 +90,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
       "categoryId": 10,
       "categoryName": "給与",
       "categoryColor": "#2ECC71",
-      "type": "income",
+      "type": "INCOME",
       "amount": 315000,
       "date": "2026-05-25",
       "memo": "5月給与",
@@ -102,7 +102,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
       "categoryId": 8,
       "categoryName": "医療・健康",
       "categoryColor": "#E74C3C",
-      "type": "expense",
+      "type": "EXPENSE",
       "amount": 2200,
       "date": "2026-05-10",
       "memo": "薬局",
@@ -114,7 +114,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
       "categoryId": 6,
       "categoryName": "通信費",
       "categoryColor": "#16A085",
-      "type": "expense",
+      "type": "EXPENSE",
       "amount": 3600,
       "date": "2026-05-08",
       "memo": "スマホ料金",
@@ -126,7 +126,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
       "categoryId": 1,
       "categoryName": "食費",
       "categoryColor": "#FF5733",
-      "type": "expense",
+      "type": "EXPENSE",
       "amount": 3800,
       "date": "2026-05-05",
       "memo": "スーパー食材",
@@ -138,7 +138,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
       "categoryId": 1,
       "categoryName": "食費",
       "categoryColor": "#FF5733",
-      "type": "expense",
+      "type": "EXPENSE",
       "amount": 1200,
       "date": "2026-05-02",
       "memo": "ランチ",
@@ -150,7 +150,7 @@ GET /api/workspaces/10/transactions?yearMonth=2026-05
       "categoryId": 2,
       "categoryName": "交通費",
       "categoryColor": "#3498DB",
-      "type": "expense",
+      "type": "EXPENSE",
       "amount": 2500,
       "date": "2026-05-02",
       "memo": "交通費チャージ",
