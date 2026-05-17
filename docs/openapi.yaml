@@ -109,6 +109,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /api/users/me:
+    get:
+      tags:
+        - users
+      summary: ユーザー情報取得（自分）
+      description: ログインユーザーの情報を取得する
+      responses:
+        "200":
+          description: ユーザー情報取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: user@example.com
+                  userName:
+                    type: integer
+                    example: user1
+                  userId:
+                    type: integer
+                    example: 1
+        "401":
+          description: "認証失敗"
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     ErrorResponse:
