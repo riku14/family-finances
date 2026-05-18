@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.14'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.10.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+// openapi.yaml からインターフェースとDTOを build/generated/ に生成
+openApiGenerate {
+    generatorName = 'spring'
+    inputSpec     = "$rootDir/../docs/openapi.yaml"
+    outputDir     = layout.buildDirectory.dir('generated').get().asFile.absolutePath
+    apiPackage    = 'com.example.api'
+    modelPackage  = 'com.example.api.model'
+    configOptions = [
+        interfaceOnly   : 'true',
+        useSpringBoot3  : 'true',
+        useTags         : 'true',
+        dateLibrary     : 'java8',
+        openApiNullable : 'false',
+    ]
+}
+
+// 生成コードをコンパイル対象のソースセットに追加
+sourceSets {
+    main {
+        java {
+            srcDir layout.buildDirectory.dir('generated/src/main/java')
+        }
+    }
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+
+dependencies {
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // DB
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly    'org.postgresql:postgresql'
+
+    // openapi-generator が生成したコードが必要とする依存
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.25'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+    // Lombok
+    compileOnly             'org.projectlombok:lombok'
+    annotationProcessor     'org.projectlombok:lombok'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}

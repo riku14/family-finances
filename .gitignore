@@ -1,6 +1,10 @@
 # node
 **/node_modules/
 
+# Gradle
+backend/build/
+backend/.gradle/
+
 # vscode
 .vscode
 
