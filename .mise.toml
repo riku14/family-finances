@@ -1,4 +1,5 @@
 [tools]
 java = "temurin-21.0.5+11.0.LTS"
+gradle = "latest"
 node = "24.15.0"
 "npm:@stoplight/prism-cli" = "latest"
