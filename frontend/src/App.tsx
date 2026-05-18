@@ -1,10 +1,11 @@
+import { Route, Routes } from "react-router"
 
 function App() {
 
   return (
-    <>
-      <h1>家計簿アプリ</h1>
-    </>
+    <Routes>
+      <Route path="/" element={<div>ダッシュボード</div>} />
+    </Routes>
   )
 }
 
