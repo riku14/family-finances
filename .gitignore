@@ -15,3 +15,5 @@ backend/.gradle/
 .env.mock
 **/.DS_Store
 .idea/
+
+**/モックアプリ
