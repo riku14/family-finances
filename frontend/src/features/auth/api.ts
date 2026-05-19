@@ -6,5 +6,6 @@ export const login = async (email: string, password: string) => {
     })
 
     if (error) throw error;
+    if (!data) throw new Error('レスポンスデータがありません')
     return data;
 }

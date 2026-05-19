@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useLogin } from "../hooks/useLogin"
+import { Link } from "react-router"
 
 export const LoginPage = () => {
     const [email, setEmail] = useState("")
@@ -33,6 +34,7 @@ export const LoginPage = () => {
                                 <Input
                                     id="email"
                                     type="email"
+                                    value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="email@example.com"
                                     required
@@ -62,10 +64,10 @@ export const LoginPage = () => {
                         </Button>
                         {error && <p className="text-destructive text-sm mt-2">{error}</p>}
                     </CardContent>
-                    <CardFooter className="justify-center bg-white border-none">
+                    <CardFooter className="justify-center border-none bg-card">
                         <span className="text-sm">
                             アカウントをお持ちでないですか？
-                            <Button variant="link" className="px-1">新規登録</Button>
+                            <Link to="/register">新規登録</Link>
                         </span>
                     </CardFooter>
                 </form>
