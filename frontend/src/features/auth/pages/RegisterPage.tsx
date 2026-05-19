@@ -4,17 +4,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
-import { useLogin } from "../hooks/useLogin"
+import { useRegister } from "../hooks/useRegister"
 import { Link } from "react-router"
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
+    const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const { handleLogin, error, loading } = useLogin();
+    const { handleRegister, error, loading } = useRegister();
 
     const onSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault()
-        handleLogin(email, password)
+        handleRegister(name, email, password)
     }
 
     return (
@@ -22,13 +23,23 @@ export const LoginPage = () => {
             <Card className="w-full max-w-md shadow-md">
                 <CardHeader className="text-center">
                     {/* TODO:ロゴ追加 */}
-                    <CardTitle className="text-2xl font-bold">家計簿へようこそ</CardTitle>
-                    <CardDescription>日々の記録を、もっと身近に。
-                    </CardDescription>
+                    <CardTitle className="text-2xl font-bold">アカウント登録</CardTitle>
+                    <CardDescription>今日から始める、新しいお金の管理。</CardDescription>
                 </CardHeader>
                 <form onSubmit={onSubmit}>
                     <CardContent>
                         <div className="flex flex-col gap-6 mb-6">
+                            <div className="grid gap-2">
+                                <Label htmlFor="name">ニックネーム</Label>
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="貯金太郎"
+                                    required
+                                />
+                            </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">メールアドレス</Label>
                                 <Input
@@ -41,13 +52,7 @@ export const LoginPage = () => {
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">パスワード</Label>
-                                    {/* TODO: パスワード変更画面実装 */}
-                                    {/* <Link to="/">
-                                        パスワードをお忘れですか？
-                                    </Link> */}
-                                </div>
+                                <Label htmlFor="password">パスワード</Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -55,17 +60,18 @@ export const LoginPage = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                 />
+                                <p className="text-xs text-muted-foreground">8文字以上の英数字</p>
                             </div>
                         </div>
                         <Button type="submit" className="w-full p-5" disabled={loading}>
-                            {loading ? "ログイン中..." : "ログイン"}
+                            {loading ? "登録中..." : "登録"}
                         </Button>
                         {error && <p className="text-destructive text-sm mt-2">{error}</p>}
                     </CardContent>
                     <CardFooter className="justify-center border-none bg-card">
                         <span className="text-sm">
-                            アカウントをお持ちでないですか？
-                            <Link to="/register">新規登録</Link>
+                            すでにアカウントをお持ちですか？
+                            <Link to="/login">ログイン</Link>
                         </span>
                     </CardFooter>
                 </form>

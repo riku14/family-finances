@@ -9,3 +9,12 @@ export const login = async (email: string, password: string) => {
     if (!data) throw new Error('レスポンスデータがありません')
     return data;
 }
+
+export const register = async (name: string, email: string, password: string) => {
+    const { data, error } = await client.POST('/api/users', {
+        body: { name, email, password },
+    })
+    if (error) throw error;
+    if (!data) throw new Error('レスポンスデータがありません')
+    return data;
+}
