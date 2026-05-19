@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "docs": "swagger-ui-watcher docs/openapi.yaml",
-    "mock": "prism mock docs/openapi.yaml",
-    "gen:types": "openapi-typescript docs/openapi.yaml -o frontend/src/api/schema.d.ts"
+    "mock": "prism mock docs/openapi.yaml"
   },
   "devDependencies": {
     "@stoplight/prism-cli": "latest",

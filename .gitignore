@@ -12,5 +12,6 @@ backend/.gradle/
 .env
 .env.local
 .env.*.local
+.env.mock
 **/.DS_Store
 .idea/
