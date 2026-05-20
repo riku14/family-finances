@@ -30,7 +30,7 @@ export const useDashboard = () => {
 
                 setTransactions(list)
                 setSummary({ income, expense, balance: income - expense })
-            } catch (e) {
+            } catch {
                 setError("データの取得に失敗しました")
             } finally {
                 setLoading(false)

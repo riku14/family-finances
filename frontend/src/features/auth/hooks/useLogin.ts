@@ -20,6 +20,7 @@ export const useLogin = () => {
             const personalWorkspace = data.workspaces.find(ws => ws.type === "PERSONAL")
             if (personalWorkspace) {
                 localStorage.setItem("workspace_id", String(personalWorkspace.workspaceId))
+                localStorage.setItem("workspace_name", String(personalWorkspace.workspaceName ?? "個人ワークスペース"))
             }
             navigate('/')
         } catch (e) {
