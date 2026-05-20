@@ -3,6 +3,7 @@ import { LoginPage } from "./features/auth/pages/LoginPage"
 import { RegisterPage } from "./features/auth/pages/RegisterPage"
 import { PrivateRoute } from "./components/PrivateRoute"
 import { AuthenticatedLayout } from "./components/layouts/AuthenticatedLayout"
+import { DashboardPage } from "./features/dashboard/pages/DashboardPage"
 
 function App() {
 
@@ -14,8 +15,8 @@ function App() {
       {/* 認証必要 */}
       <Route element={<PrivateRoute />}>
         <Route element={<AuthenticatedLayout />}>
-          <Route path="/" element={<div>ダッシュボード</div>} />
-          <Route path="/dashboard" element={<div>ダッシュボード（仮）</div>} />
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
       </Route>
     </Routes>
