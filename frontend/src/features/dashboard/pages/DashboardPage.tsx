@@ -1,5 +1,6 @@
 import { Progress } from "@/components/ui/progress"
 import { useDashboard } from "../hooks/useDashboard"
+import { Badge } from "@/components/ui/badge"
 
 export const DashboardPage = () => {
     const { transactions, summary, loading, error } = useDashboard()
@@ -30,11 +31,13 @@ export const DashboardPage = () => {
                     </div>
                     <div>
                         <p className="text-muted-foreground">支出</p>
-                        <p className="font-semibold text-text-destructive">¥{summary.expense.toLocaleString()}</p>
+                        <p className="font-semibold text-destructive">¥{summary.expense.toLocaleString()}</p>
                     </div>
                     <div>
                         <p className="text-muted-foreground">残金</p>
-                        <p className="font-semibold">¥{summary.balance.toLocaleString()}</p>
+                        <p className={`font-semibold ${summary.balance >= 0 ? "text-green-600" : "text-destructive"}`}>
+                            {summary.balance >= 0 ? "+" : "-"}¥{Math.abs(summary.balance).toLocaleString()}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -47,15 +50,20 @@ export const DashboardPage = () => {
                 ) : (
                     <ul className="space-y-2 list-none">
                         {transactions.slice(0, 5).map(t => (
-                            <li key={t.id} className="flex justify-between rounded-lg border p-3  bg-card shadow-lg">
+                            <li key={t.id} className="flex justify-between rounded-lg border border-l-4 p-3 bg-card shadow-lg"
+                                style={{ borderLeftColor: t.categoryColor ?? "#ccc" }}>
                                 <div>
                                     <span className="font-medium">{t.categoryName}</span>
                                     {t.memo && (
-                                        <span className="ml-2 text-sm text-muted-foreground">{t.memo}</span>
+                                        <span className="mx-2 text-sm text-muted-foreground">{t.memo}</span>
                                     )}
+                                    <Badge className={t.type === "INCOME" ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
+                                        : "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"}>
+                                        {t.type === "INCOME" ? "収入" : "支出"}
+                                    </Badge>
                                     <p className="text-xs text-muted-foreground">{t.date}</p>
                                 </div>
-                                <span className={t.type === "INCOME" ? "text-green-600" : "text-text-destructive"}>
+                                <span className={t.type === "INCOME" ? "text-green-600" : "text-destructive"}>
                                     {t.type === "INCOME" ? "+" : "-"}¥{(t.amount ?? 0).toLocaleString()}
                                 </span>
                             </li>
