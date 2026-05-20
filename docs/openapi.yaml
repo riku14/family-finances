@@ -467,6 +467,20 @@ paths:
           description: "取得成功（0件の場合は空配列）"
           content:
             application/json:
+              example:
+                categories:
+                  - id: 1
+                    workspaceId: 10
+                    name: 食費
+                    type: EXPENSE
+                    color: "#FF5733"
+                    createdAt: "2026-05-14T10:00:00Z"
+                  - id: 2
+                    workspaceId: 10
+                    name: 給与
+                    type: INCOME
+                    color: "#33FF57"
+                    createdAt: "2026-05-14T10:00:00Z"
               schema:
                 type: object
                 properties:
@@ -518,6 +532,13 @@ paths:
           description: "カテゴリ作成成功"
           content:
             application/json:
+              example:
+                id: 1
+                workspaceId: 10
+                name: 食費
+                type: EXPENSE
+                color: "#FF5733"
+                createdAt: "2026-05-14T10:00:00Z"
               schema:
                 $ref: "#/components/schemas/CategoryResponse"
         "400":
@@ -573,6 +594,13 @@ paths:
           description: "カテゴリ更新成功"
           content:
             application/json:
+              example:
+                id: 1
+                workspaceId: 10
+                name: 外食費
+                type: EXPENSE
+                color: "#FFA500"
+                createdAt: "2026-05-14T10:00:00Z"
               schema:
                 $ref: "#/components/schemas/CategoryResponse"
         "400":
@@ -644,6 +672,31 @@ paths:
           description: "取得成功（0件の場合はtransactionsが空配列）"
           content:
             application/json:
+              example:
+                yearMonth: "2026-05"
+                transactions:
+                  - id: 100
+                    workspaceId: 10
+                    categoryId: 1
+                    categoryName: 食費
+                    categoryColor: "#FF5733"
+                    type: EXPENSE
+                    amount: 1500
+                    date: "2026-05-14"
+                    memo: "ランチ代"
+                    registeredBy: "管理者太郎"
+                    createdAt: "2026-05-14T12:30:00Z"
+                  - id: 101
+                    workspaceId: 10
+                    categoryId: 2
+                    categoryName: 給与
+                    categoryColor: "#33FF57"
+                    type: INCOME
+                    amount: 300000
+                    date: "2026-05-01"
+                    memo: ""
+                    registeredBy: "管理者太郎"
+                    createdAt: "2026-05-01T09:00:00Z"
               schema:
                 type: object
                 properties:

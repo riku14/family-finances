@@ -4,6 +4,7 @@ import { RegisterPage } from "./features/auth/pages/RegisterPage"
 import { PrivateRoute } from "./components/PrivateRoute"
 import { AuthenticatedLayout } from "./components/layouts/AuthenticatedLayout"
 import { DashboardPage } from "./features/dashboard/pages/DashboardPage"
+import { CategoriesPage } from "./features/categories/pages/CategoriesPage"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route element={<AuthenticatedLayout />}>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
         </Route>
       </Route>
     </Routes>
