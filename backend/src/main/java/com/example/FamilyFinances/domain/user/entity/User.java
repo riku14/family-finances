@@ -22,7 +22,7 @@ public class User {
     @Column(nullable = false,unique = true)  //NOT NULL、重複禁止
     private String email;
     
-    @Column(name = "password_hush",nullable = false)  //NOT NULL
+    @Column(nullable = false)  //NOT NULL
     private String passwordHush;
 
     @Column(nullable = true)
