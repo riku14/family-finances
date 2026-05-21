@@ -32,7 +32,7 @@ public class UserService {
         //DBに渡すためのデータをセットする
         User newUser = User.builder()
                 .email(email)
-                .password(passwordEncoder.encode(password)) // ※パスワードハッシュ化は、開通テストの後にセキュリティ設定と合わせて実装します
+                .passwordHush(passwordEncoder.encode(password)) // ※パスワードハッシュ化は、開通テストの後にセキュリティ設定と合わせて実装します
                 .name(name)
                 .build();
         User savedUser = userRepository.save(newUser);

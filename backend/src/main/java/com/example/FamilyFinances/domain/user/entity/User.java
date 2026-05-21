@@ -1,6 +1,6 @@
 package com.example.FamilyFinances.domain.user.entity;
 
-import com.example.FamilyFinances.domain.user.enums.SystemRoleType;
+import com.example.FamilyFinances.domain.constant.SystemRoleType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,10 +22,10 @@ public class User {
     @Column(nullable = false,unique = true)  //NOT NULL、重複禁止
     private String email;
     
-    @Column(nullable = false)  //NOT NULL
-    private String password;
+    @Column(name = "password_hush",nullable = false)  //NOT NULL
+    private String passwordHush;
 
-    @Column(nullable = true)  //NOT NULL
+    @Column(nullable = true)
     private String name = this.email;
 
     @Enumerated(EnumType.STRING)  //EnumをStringとして扱う。インデックスが変わっても扱うものを間違えない
