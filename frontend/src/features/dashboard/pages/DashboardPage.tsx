@@ -1,6 +1,7 @@
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { Separator } from "@/components/ui/separator"
 import { useDashboard } from "../hooks/useDashboard"
-import { Badge } from "@/components/ui/badge"
 
 export const DashboardPage = () => {
     const { transactions, summary, loading, error } = useDashboard()
@@ -43,7 +44,47 @@ export const DashboardPage = () => {
             </div>
 
             {/* 直近の収支 */}
-            <div className="space-y-2">
+            <Card>
+                <CardHeader>
+                    <CardTitle>最近の取引</CardTitle>
+                    <CardAction>
+                        <button className=" text-muted-foreground text-sm">
+                            すべて見る →
+                        </button>
+                    </CardAction>
+                </CardHeader>
+                <CardContent className="px-6 pb-6">
+                    {transactions.length === 0 ? (
+                        <p className="text-muted-foreground text-sm">今月の収支はまだありません</p>
+                    ) : (
+                        <ul className="list-none space-y-0">
+                            {transactions.slice(0, 5).map((t, i) => (
+                                <>
+                                    {i > 0 && <Separator key={`sep-${t.id}`} />}
+                                    <li key={t.id} className="flex items-start justify-between py-3 gap-3">
+                                        <div className="flex items-start gap-3">
+                                            <span
+                                                className="w-1 h-10 rounded-full shrink-0"
+                                                style={{ backgroundColor: t.categoryColor ?? "#ccc" }}
+                                            />
+                                            <div>
+                                                <p className="font-medium">{t.memo || t.categoryName}</p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {t.date} · {t.registeredBy}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <span className={`font-semibold whitespace-nowrap ${t.type === "INCOME" ? "text-green-600" : "text-red-500"}`}>
+                                            {t.type === "INCOME" ? "+" : "-"}¥{(t.amount ?? 0).toLocaleString()}
+                                        </span>
+                                    </li>
+                                </>
+                            ))}
+                        </ul>
+                    )}
+                </CardContent>
+            </Card>
+            {/* <div className="space-y-2">
                 <h2>最近の収支</h2>
                 {transactions.length === 0 ? (
                     <p className="text-muted-foreground">今月の収支はまだありません</p>
@@ -70,7 +111,7 @@ export const DashboardPage = () => {
                         ))}
                     </ul>
                 )}
-            </div>
+            </div> */}
         </div>
     )
 }

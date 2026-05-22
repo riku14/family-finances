@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "../api"
 import type { components } from "@/api/schema"
+import { getErrorMessage } from "@/lib/apiError"
 
 interface Summary {
     income: number
@@ -30,8 +31,8 @@ export const useDashboard = () => {
 
                 setTransactions(list)
                 setSummary({ income, expense, balance: income - expense })
-            } catch {
-                setError("データの取得に失敗しました")
+            } catch (e) {
+                setError(getErrorMessage(e))
             } finally {
                 setLoading(false)
             }
