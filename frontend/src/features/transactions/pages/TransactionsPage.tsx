@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import { useCategories } from "@/features/categories/hooks/useCategories"
 import { ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react"
 import { useMemo, useState } from "react"
-import { useTransactions } from "../hooks/useTransactions"
+import { useTransactionList } from "../hooks/useTransactionList"
 
 type Transaction = components["schemas"]["TransactionResponse"]
 type TransactionType = "INCOME" | "EXPENSE"
@@ -51,7 +51,7 @@ const toYearMonthStr = (date: Date) =>
     `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
 
 export const TransactionsPage = () => {
-    const { yearMonth, setYearMonth, transactions, loading, error, handleCreate, handleUpdate, handleDelete } = useTransactions()
+    const { yearMonth, setYearMonth, transactions, loading, error, handleUpdate, handleDelete } = useTransactionList()
     const { categories } = useCategories()
 
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -106,11 +106,8 @@ export const TransactionsPage = () => {
             date: form.date,
             memo: form.memo || undefined,
         }
-        if (editing) {
-            await handleUpdate(editing.id!, body)
-        } else {
-            await handleCreate(body)
-        }
+        if (editing) await handleUpdate(editing.id!, body)
+
         setDialogOpen(false)
     }
 

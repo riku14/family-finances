@@ -2,6 +2,7 @@ import type { components } from "@/api/schema";
 import { useCallback, useEffect, useState } from "react";
 import { createCategory, deleteCategories, fetchCategories, updateCategory } from "../api";
 import { getErrorMessage } from "@/lib/apiError";
+import { apiUtils } from "@/lib/apiUtils";
 
 type Category = components["schemas"]["CategoryResponse"]
 
@@ -34,17 +35,14 @@ export const useCategories = () => {
     }, [refreshKey])
 
     const handleCreate = async (body: { name: string, type: "INCOME" | "EXPENSE", color?: string }) => {
-        await createCategory(body)
-        await refresh()
+        await apiUtils(() => createCategory(body), "登録しました", refresh)
     }
 
     const handleUpdate = async (id: number, body: { name: string, type: "INCOME" | "EXPENSE", color?: string }) => {
-        await updateCategory(id, body)
-        await refresh()
+        await apiUtils(() => updateCategory(id, body), "更新しました", refresh)
     }
     const handleDelete = async (id: number) => {
-        await deleteCategories(id)
-        await refresh()
+        await apiUtils(() => deleteCategories(id), "削除しました", refresh)
     }
 
     return {

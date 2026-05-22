@@ -7,26 +7,29 @@ import { DashboardPage } from "./features/dashboard/pages/DashboardPage"
 import { CategoriesPage } from "./features/categories/pages/CategoriesPage"
 import { TransactionsPage } from "./features/transactions/pages/TransactionsPage"
 import { TransactionFormPage } from "./features/transactions/pages/TransactionFormPage"
+import { Toaster } from "sonner"
 
 function App() {
 
   return (
-    <Routes>
-      {/* 認証不要 */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      {/* 認証必要 */}
-      <Route element={<PrivateRoute />}>
-        <Route element={<AuthenticatedLayout />}>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/transactions" element={<TransactionsPage />} />
-          <Route path="/transactions/new" element={<TransactionFormPage />} />
-          <Route path="/transactions/:id/edit" element={<TransactionFormPage />} />
+    <>
+      <Routes>
+        {/* 認証不要 */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* 認証必要 */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/transactions" element={<TransactionsPage />} />
+            <Route path="/transactions/new" element={<TransactionFormPage />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+      <Toaster richColors position="top-center" />
+    </>
   )
 }
 

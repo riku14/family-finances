@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useCategories } from "@/features/categories/hooks/useCategories"
 import { useState } from "react"
-import { useLocation, useNavigate, useParams } from "react-router"
-import { useTransactions } from "../hooks/useTransactions"
+import { useLocation, useParams } from "react-router"
+import { useTransactionMutations } from "../hooks/useTransactionMutations"
 
 type Transaction = components["schemas"]["TransactionResponse"]
 type TransactionType = "INCOME" | "EXPENSE"
@@ -30,12 +30,9 @@ const defaultForm: FormState = {
 
 export const TransactionFormPage = () => {
     const { id } = useParams()
-    const navigate = useNavigate()
     const location = useLocation()
     const isEdit = id !== undefined
     const transaction = location.state?.transaction as Transaction | undefined
-
-    const { handleCreate, handleUpdate } = useTransactions()
     const { categories } = useCategories()
 
     const [form, setForm] = useState<FormState>(() => {
@@ -49,6 +46,9 @@ export const TransactionFormPage = () => {
             }
         }
         return defaultForm
+    })
+    const { handleCreate, handleUpdate } = useTransactionMutations(() => {
+        setForm(defaultForm)
     })
 
     const onSubmit = async () => {
@@ -65,7 +65,6 @@ export const TransactionFormPage = () => {
         } else {
             await handleCreate(body)
         }
-        navigate("/transactions")
     }
 
     return (
