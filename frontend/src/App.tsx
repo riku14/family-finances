@@ -5,6 +5,8 @@ import { PrivateRoute } from "./components/PrivateRoute"
 import { AuthenticatedLayout } from "./components/layouts/AuthenticatedLayout"
 import { DashboardPage } from "./features/dashboard/pages/DashboardPage"
 import { CategoriesPage } from "./features/categories/pages/CategoriesPage"
+import { TransactionsPage } from "./features/transactions/pages/TransactionsPage"
+import { TransactionFormPage } from "./features/transactions/pages/TransactionFormPage"
 
 function App() {
 
@@ -19,6 +21,9 @@ function App() {
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/transactions/new" element={<TransactionFormPage />} />
+          <Route path="/transactions/:id/edit" element={<TransactionFormPage />} />
         </Route>
       </Route>
     </Routes>

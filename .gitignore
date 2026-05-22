@@ -16,4 +16,6 @@ backend/.gradle/
 **/.DS_Store
 .idea/
 
+# サンプル置き場
 **/モックアプリ
+**/temp

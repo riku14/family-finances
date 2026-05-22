@@ -9,14 +9,15 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { ArrowLeftRight, ChevronsUpDown, House, LayoutDashboard, Tag } from "lucide-react"
+import { ArrowLeftRight, ChevronsUpDown, CirclePlus, House, LayoutDashboard, Tag } from "lucide-react"
 import { Link, Outlet, useLocation } from "react-router"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 
 const navItems = [
     { to: "/dashboard", label: "ダッシュボード", icon: LayoutDashboard },
-    { to: "/categories", label: "カテゴリ", icon: Tag },
+    { to: "/transactions/new", label: "収支登録", icon: CirclePlus },
     { to: "/transactions", label: "収支履歴", icon: ArrowLeftRight },
+    { to: "/categories", label: "カテゴリ", icon: Tag },
 ]
 
 export const AuthenticatedLayout = () => {
@@ -31,7 +32,7 @@ export const AuthenticatedLayout = () => {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <div className="flex justify-end mb-3">
-                            <SidebarTrigger />
+                                <SidebarTrigger />
                             </div>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
