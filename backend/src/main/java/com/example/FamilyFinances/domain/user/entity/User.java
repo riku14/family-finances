@@ -35,7 +35,7 @@ public class User {
 
     //DB側ではcreated_at、NOTNULL、javaからの新規作成・更新を禁止する。
     @org.hibernate.annotations.CreationTimestamp
-    @Column(name = "created_at",nullable = false,updatable = false,insertable = false)
+    @Column(name = "created_at",nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

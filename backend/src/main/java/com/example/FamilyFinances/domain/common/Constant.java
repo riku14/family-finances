@@ -28,9 +28,30 @@ public final class Constant {
 
     @Getter
     @RequiredArgsConstructor
+    public enum WorkspaceType implements CodedEnum{
+        PERSONAL("PERSONAL","個人"),
+        GROUP("GROUP","グループ");
+
+        private final String code;
+        private final String label;
+    }
+
+
+    @Getter
+    @RequiredArgsConstructor
     public enum WorkspaceRoleType implements CodedEnum{
         ADMIN("ADMIN","管理者"),
         MEMBER("MEMBER","メンバー");
+
+        private final String code;
+        private final String label;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum WorkspaceStatus implements CodedEnum{
+        ACTIVE("ACTIVE","アクティブ"),
+        LEFT("LEFT","不在");
 
         private final String code;
         private final String label;
