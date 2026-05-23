@@ -1,7 +1,7 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.5.14'
-    id 'io.spring.dependency-management' version '1.1.7'
+	id 'java'
+	id 'org.springframework.boot' version '3.5.14'
+	id 'io.spring.dependency-management' version '1.1.7'
     id 'org.openapi.generator' version '7.10.0'
 }
 
@@ -9,14 +9,15 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
-// openapi.yaml からインターフェースとDTOを build/generated/ に生成
 openApiGenerate {
     generatorName = 'spring'
     inputSpec     = "$rootDir/../docs/openapi.yaml"
@@ -24,15 +25,19 @@ openApiGenerate {
     apiPackage    = 'com.example.api'
     modelPackage  = 'com.example.api.model'
     configOptions = [
-        interfaceOnly   : 'true',
-        useSpringBoot3  : 'true',
-        useTags         : 'true',
-        dateLibrary     : 'java8',
-        openApiNullable : 'false',
+            interfaceOnly   : 'true',
+            useSpringBoot3  : 'true',
+            useTags         : 'true',
+            dateLibrary     : 'java8',
+            openApiNullable : 'false',
     ]
 }
 
-// 生成コードをコンパイル対象のソースセットに追加
+tasks.named('openApiGenerate') {
+    inputs.file("$rootDir/../docs/openapi.yaml")
+    outputs.dir(layout.buildDirectory.dir('generated'))
+}
+
 sourceSets {
     main {
         java {
@@ -44,26 +49,28 @@ sourceSets {
 compileJava.dependsOn tasks.openApiGenerate
 
 dependencies {
-    // Spring Boot
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    // DB
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-database-postgresql'
-    runtimeOnly    'org.postgresql:postgresql'
-
-    // openapi-generator が生成したコードが必要とする依存
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.25'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
-    // Lombok
-    compileOnly             'org.projectlombok:lombok'
-    annotationProcessor     'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompileOnly 'org.projectlombok:lombok'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+    // テスト用の使い捨てメモリデータベース
+    testImplementation 'com.h2database:h2'
+}
 
-    // Test
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
+tasks.named('test') {
+	useJUnitPlatform()
 }
