@@ -1,23 +1,11 @@
 package com.example.FamilyFinances.domain.workspace.entity;
 
-import java.time.LocalDateTime;
-
+import com.example.FamilyFinances.domain.common.Constant;
 import com.example.FamilyFinances.domain.user.entity.User;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "workspaces")
@@ -35,13 +23,24 @@ public class Workspace {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;
+    private Constant.WorkspaceType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_user_id", nullable = false)
     private User owner;
 
-    @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
+    @org.hibernate.annotations.CreationTimestamp
+    @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
+
+    @org.hibernate.annotations.CreationTimestamp
+    @Column(nullable = false,updatable = true)
+    private LocalDateTime updatedAt;
+
+    @Column(updatable = false,insertable = false)
+    private LocalDateTime deletedAt;
+
+
 }

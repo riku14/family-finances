@@ -41,7 +41,7 @@ public class UserService {
 
         Workspace personalWorkspace = Workspace.builder()
                 .name(savedUser.getName() + "のワークスペース")
-                .type("PERSONAL")
+                .type(Constant.WorkspaceType.PERSONAL)
                 .owner(savedUser)
                 .build();
         Workspace savedWorkspace = workspaceRepository.save(personalWorkspace);
