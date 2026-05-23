@@ -8,7 +8,7 @@ public final class Constant {
 
     @Getter
     @RequiredArgsConstructor
-    public enum SystemRoleType {
+    public enum SystemRoleType implements CodedEnum{
         ADMIN("ADMIN","管理者"),
         USER("USER","一般ユーザー");
 
@@ -18,7 +18,7 @@ public final class Constant {
 
     @Getter
     @RequiredArgsConstructor
-    public enum TransactionType{
+    public enum TransactionType implements CodedEnum{
         EXPENSE("EXPENSE","支出"),
         INCOME("INCOME","収入");
 
