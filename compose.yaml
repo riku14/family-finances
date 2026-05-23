@@ -21,6 +21,17 @@ services:
       retries: 10
     networks:
       - family-finances-network
+  adminer:
+    image: adminer:latest
+    container_name: family-finances-adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8081}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - family-finances-network    
 
 volumes:
   postgres_data:
