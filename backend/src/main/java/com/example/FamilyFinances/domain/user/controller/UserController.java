@@ -9,9 +9,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController  //コントローラクラスであることの宣言＋JSONデータだけを返すクラスとして扱う。
+@CrossOrigin(origins = "*") 
 @RequiredArgsConstructor  //宣言が必要な変数を引数に取るコンストラクタを自動で生成する
 public class UserController implements UsersApi {
 
