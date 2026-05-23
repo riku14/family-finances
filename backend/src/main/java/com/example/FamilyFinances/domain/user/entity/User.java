@@ -1,6 +1,6 @@
 package com.example.FamilyFinances.domain.user.entity;
 
-import com.example.FamilyFinances.domain.constant.SystemRoleType;
+import com.example.FamilyFinances.domain.common.Constant;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,18 +23,25 @@ public class User {
     private String email;
     
     @Column(nullable = false)  //NOT NULL
-    private String passwordHush;
+    private String passwordHash;
 
     @Column(nullable = true)
-    private String name = this.email;
+    private String name;
 
     @Enumerated(EnumType.STRING)  //EnumをStringとして扱う。インデックスが変わっても扱うものを間違えない
     @Builder.Default  //Builderにデフォルトを設定してることを示す。
     @Column(nullable = false)  //NOT NULL
-    private SystemRoleType systemRole = SystemRoleType.USER;  //DefaultをUSERにする
+    private Constant.SystemRoleType systemRole = Constant.SystemRoleType.USER;  //DefaultをUSERにする
 
     //DB側ではcreated_at、NOTNULL、javaからの新規作成・更新を禁止する。
     @org.hibernate.annotations.CreationTimestamp
     @Column(name = "created_at",nullable = false,updatable = false,insertable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist(){
+        if(this.name == null || this.name.isEmpty()){
+        this.name = this.email;
+        }
+    }
 }

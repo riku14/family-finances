@@ -1,8 +1,11 @@
 package com.example.FamilyFinances.domain.user.service;
 
+import com.example.FamilyFinances.domain.common.Constant;
 import com.example.FamilyFinances.domain.user.entity.User;
 import com.example.FamilyFinances.domain.user.repository.UserRepository;
 import com.example.FamilyFinances.domain.workspace.entity.Workspace;
+import com.example.FamilyFinances.domain.workspace.entity.WorkspaceMember;
+import com.example.FamilyFinances.domain.workspace.repository.WorkspaceMemberRepository;
 import com.example.FamilyFinances.domain.workspace.repository.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final WorkspaceRepository workspaceRepository;
+    private final WorkspaceMemberRepository workspaceMemberRepository;
 
     /**
      * 新しいユーザーを登録する（ビジネスロジック）
@@ -28,11 +32,9 @@ public class UserService {
             throw new IllegalArgumentException("このメールアドレスは既に登録されています。");
         }
 
-        // 2. 新しいユーザーのデータを組み立てる
-        //DBに渡すためのデータをセットする
         User newUser = User.builder()
                 .email(email)
-                .passwordHush(passwordEncoder.encode(password)) // ※パスワードハッシュ化は、開通テストの後にセキュリティ設定と合わせて実装します
+                .passwordHash(passwordEncoder.encode(password))
                 .name(name)
                 .build();
         User savedUser = userRepository.save(newUser);
@@ -41,9 +43,16 @@ public class UserService {
                 .name(savedUser.getName() + "のワークスペース")
                 .type("PERSONAL")
                 .build();
-        workspaceRepository.save(personalWorkspace);
+        Workspace savedWorkspace = workspaceRepository.save(personalWorkspace);
 
-        // 3. データベースに保存して、結果を返す
+        WorkspaceMember member = WorkspaceMember.builder()
+                .workspace(savedWorkspace)
+                .user(savedUser)
+                .role(Constant.WorkspaceRoleType.ADMIN)
+                .build();
+        workspaceMemberRepository.save(member);
+
+
         return savedUser;
     }
 }
