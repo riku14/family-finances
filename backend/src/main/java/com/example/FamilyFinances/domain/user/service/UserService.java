@@ -23,7 +23,7 @@ public class UserService {
     private final WorkspaceMemberRepository workspaceMemberRepository;
 
     /**
-     * 新しいユーザーを登録する（ビジネスロジック）
+     * 新規登録
      */
     @Transactional  //このメソッドをトランザクションとして扱うとDBに指示を出す役割。
     public User registerUser(String email, String password, String name) {
@@ -55,5 +55,26 @@ public class UserService {
 
 
         return savedUser;
+    }
+
+    /**
+     * ログイン
+     */
+    @Transactional(readOnly = true) // 読み取り専用の処理なので、これをつけるとDBの動きが少し速くなります！
+    public User login(String email, String password) {
+
+        // 1. メールアドレスでDBから「本物のユーザー」を検索する
+        // orElseThrow を使うと、「見つからなかったらエラーを投げる、見つかったら中身を取り出す」が1行で書けます！
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("入力されたメールアドレスは登録されていません。"));
+
+        // 2. パスワードの答え合わせ（超重要！）
+        // passwordEncoder.matches(画面から来た生のパスワード, DBの暗号化されたパスワード) で比較します
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new IllegalArgumentException("パスワードが間違っています。");
+        }
+
+        // 3. 本物であることが証明されたユーザーデータを返す
+        return user;
     }
 }
