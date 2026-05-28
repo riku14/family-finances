@@ -1,3 +1,4 @@
+import type { components } from "@/api/schema"
 import {
     Sidebar,
     SidebarContent,
@@ -9,20 +10,36 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { ArrowLeftRight, ChevronsUpDown, CirclePlus, House, LayoutDashboard, Tag } from "lucide-react"
-import { Link, Outlet, useLocation } from "react-router"
+import { ArrowLeftRight, ChevronsUpDown, CirclePlus, House, LayoutDashboard, Tag, Users } from "lucide-react"
+import { Link, Outlet, useLocation, useNavigate } from "react-router"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+
+type WorkspaceSummary = components["schemas"]["WorkspaceSummary"]
 
 const navItems = [
     { to: "/dashboard", label: "ダッシュボード", icon: LayoutDashboard },
     { to: "/transactions/new", label: "収支登録", icon: CirclePlus },
     { to: "/transactions", label: "収支履歴", icon: ArrowLeftRight },
     { to: "/categories", label: "カテゴリ", icon: Tag },
+    { to: "/workspace", label: "ワークスペース管理", icon: Users },
 ]
 
 export const AuthenticatedLayout = () => {
+    const navigate = useNavigate()
     const location = useLocation()
+    const workspaceId = Number(localStorage.getItem("workspace_id"))
     const workspaceName = localStorage.getItem("workspace_name") ?? "個人ワークスペース"
+    const stored: WorkspaceSummary[] = JSON.parse(localStorage.getItem("workspaces") ?? "[]")
+
+    const workspaces = stored.length > 0
+        ? stored
+        : [{ workspaceId, workspaceName, type: "PERSONAL" as const, role: "ADMIN" as const }]
+    const switchWorkspace = (ws: WorkspaceSummary) => {
+        localStorage.setItem("workspace_id", String(ws.workspaceId))
+        localStorage.setItem("workspace_name", String(ws.workspaceName ?? ""))
+        navigate(0)
+    }
+
     return (
         <SidebarProvider>
             <Sidebar collapsible="icon">
@@ -48,11 +65,20 @@ export const AuthenticatedLayout = () => {
                                     </SidebarMenuButton>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent side="bottom" align="start" className="w-56">
-                                    {/* TODO: ワークスペース切り替え */}
-                                    <DropdownMenuItem disabled>
-                                        <House />
-                                        {workspaceName}
-                                    </DropdownMenuItem>
+                                    {workspaces.map(ws => (
+                                        <DropdownMenuItem
+                                            key={ws.workspaceId}
+                                            onClick={() => switchWorkspace(ws)}
+                                            disabled={ws.workspaceId === workspaceId}
+                                            className={ws.workspaceId === workspaceId ? "font-semibold" : ""}
+                                        >
+                                            <House />
+                                            <span>
+                                                {ws.workspaceName}
+                                                {ws.type === "GROUP" && " (グループ)"}
+                                            </span>
+                                        </DropdownMenuItem>
+                                    ))}
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </SidebarMenuItem>
