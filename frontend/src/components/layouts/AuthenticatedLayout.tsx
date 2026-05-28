@@ -75,7 +75,7 @@ export const AuthenticatedLayout = () => {
                                             <House />
                                             <span>
                                                 {ws.workspaceName}
-                                                {ws.type === "GROUP" && " (グループ)"}
+                                                {ws.type === "GROUP"}
                                             </span>
                                         </DropdownMenuItem>
                                     ))}
