@@ -719,6 +719,28 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
+                        /**
+                         * @example {
+                         *       "categories": [
+                         *         {
+                         *           "id": 1,
+                         *           "workspaceId": 10,
+                         *           "name": "食費",
+                         *           "type": "EXPENSE",
+                         *           "color": "#FF5733",
+                         *           "createdAt": "2026-05-14T10:00:00Z"
+                         *         },
+                         *         {
+                         *           "id": 2,
+                         *           "workspaceId": 10,
+                         *           "name": "給与",
+                         *           "type": "INCOME",
+                         *           "color": "#33FF57",
+                         *           "createdAt": "2026-05-14T10:00:00Z"
+                         *         }
+                         *       ]
+                         *     }
+                         */
                         "application/json": {
                             categories?: components["schemas"]["CategoryResponse"][];
                         };
@@ -781,6 +803,16 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
+                        /**
+                         * @example {
+                         *       "id": 1,
+                         *       "workspaceId": 10,
+                         *       "name": "食費",
+                         *       "type": "EXPENSE",
+                         *       "color": "#FF5733",
+                         *       "createdAt": "2026-05-14T10:00:00Z"
+                         *     }
+                         */
                         "application/json": components["schemas"]["CategoryResponse"];
                     };
                 };
@@ -865,6 +897,16 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
+                        /**
+                         * @example {
+                         *       "id": 1,
+                         *       "workspaceId": 10,
+                         *       "name": "外食費",
+                         *       "type": "EXPENSE",
+                         *       "color": "#FFA500",
+                         *       "createdAt": "2026-05-14T10:00:00Z"
+                         *     }
+                         */
                         "application/json": components["schemas"]["CategoryResponse"];
                     };
                 };
@@ -989,6 +1031,39 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
+                        /**
+                         * @example {
+                         *       "yearMonth": "2026-05",
+                         *       "transactions": [
+                         *         {
+                         *           "id": 100,
+                         *           "workspaceId": 10,
+                         *           "categoryId": 1,
+                         *           "categoryName": "食費",
+                         *           "categoryColor": "#FF5733",
+                         *           "type": "EXPENSE",
+                         *           "amount": 1500,
+                         *           "date": "2026-05-14",
+                         *           "memo": "ランチ代",
+                         *           "registeredBy": "管理者太郎",
+                         *           "createdAt": "2026-05-14T12:30:00Z"
+                         *         },
+                         *         {
+                         *           "id": 101,
+                         *           "workspaceId": 10,
+                         *           "categoryId": 2,
+                         *           "categoryName": "給与",
+                         *           "categoryColor": "#33FF57",
+                         *           "type": "INCOME",
+                         *           "amount": 300000,
+                         *           "date": "2026-05-01",
+                         *           "memo": "",
+                         *           "registeredBy": "管理者太郎",
+                         *           "createdAt": "2026-05-01T09:00:00Z"
+                         *         }
+                         *       ]
+                         *     }
+                         */
                         "application/json": {
                             /** @example 2026-05 */
                             yearMonth?: string;

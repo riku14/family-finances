@@ -8,6 +8,7 @@ import { CategoriesPage } from "./features/categories/pages/CategoriesPage"
 import { TransactionsPage } from "./features/transactions/pages/TransactionsPage"
 import { TransactionFormPage } from "./features/transactions/pages/TransactionFormPage"
 import { Toaster } from "sonner"
+import { WorkspacesPage } from "./features/workspaces/pages/WorkspacesPage"
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/transactions/new" element={<TransactionFormPage />} />
+            <Route path="/workspace" element={<WorkspacesPage />} />
           </Route>
         </Route>
       </Routes>
