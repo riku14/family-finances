@@ -1,20 +1,20 @@
-import { client } from '../../api/client'
+import { client } from "../../api/client";
 
 export const login = async (email: string, password: string) => {
-    const { data, error } = await client.POST('/api/auth/login', {
-        body: { email, password },
-    })
+  const { data, error } = await client.POST("/api/auth/login", {
+    body: { email, password },
+  });
 
-    if (error) throw error;
-    if (!data) throw new Error('レスポンスデータがありません')
-    return data;
-}
+  if (error) throw error;
+  if (!data) throw new Error("レスポンスデータがありません");
+  return data;
+};
 
 export const register = async (name: string, email: string, password: string) => {
-    const { data, error } = await client.POST('/api/users', {
-        body: { name, email, password },
-    })
-    if (error) throw error;
-    if (!data) throw new Error('レスポンスデータがありません')
-    return data;
-}
+  const { data, error } = await client.POST("/api/users", {
+    body: { name, email, password },
+  });
+  if (error) throw error;
+  if (!data) throw new Error("レスポンスデータがありません");
+  return data;
+};
