@@ -33,10 +33,7 @@ export const useWorkspaces = () => {
   };
 
   const handleCreateInvitation = async (workspaceId: number) => {
-    await apiUtils(
-      () => createInvitation(workspaceId),
-      "招待リンクを発行しました",
-    );
+    await apiUtils(() => createInvitation(workspaceId), "招待リンクを発行しました");
   };
   return { loading, error, data, handleCreate, handleCreateInvitation };
 };

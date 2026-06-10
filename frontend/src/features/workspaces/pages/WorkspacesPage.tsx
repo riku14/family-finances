@@ -89,15 +89,11 @@ export const WorkspacesPage = () => {
             >
               <div className="flex items-center gap-3">
                 <span className="font-medium">{ws.workspaceName}</span>
-                <Badge
-                  variant={ws.type === "PERSONAL" ? "secondary" : "default"}
-                >
+                <Badge variant={ws.type === "PERSONAL" ? "secondary" : "default"}>
                   {ws.type === "PERSONAL" ? "個人" : "グループ"}
                 </Badge>
                 {ws.role && (
-                  <Badge variant="outline">
-                    {ws.role === "ADMIN" ? "管理者" : "メンバー"}
-                  </Badge>
+                  <Badge variant="outline">{ws.role === "ADMIN" ? "管理者" : "メンバー"}</Badge>
                 )}
               </div>
               {ws.type === "GROUP" && ws.role === "ADMIN" && (
@@ -115,10 +111,7 @@ export const WorkspacesPage = () => {
       </ul>
 
       {/* グループ作成ダイアログ */}
-      <Dialog
-        open={dialogMode === "create"}
-        onOpenChange={(open) => !open && closeDialog()}
-      >
+      <Dialog open={dialogMode === "create"} onOpenChange={(open) => !open && closeDialog()}>
         <DialogContent className="bg-card">
           <DialogHeader>
             <DialogTitle>グループ作成</DialogTitle>
@@ -145,10 +138,7 @@ export const WorkspacesPage = () => {
       </Dialog>
 
       {/* 招待リンク表示ダイアログ */}
-      <Dialog
-        open={dialogMode === "invite"}
-        onOpenChange={(open) => !open && closeDialog()}
-      >
+      <Dialog open={dialogMode === "invite"} onOpenChange={(open) => !open && closeDialog()}>
         <DialogContent className="bg-card">
           <DialogHeader>
             <DialogTitle>招待リンク</DialogTitle>

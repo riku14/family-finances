@@ -1,17 +1,16 @@
-import { Navigate, Route, Routes } from "react-router"
-import { LoginPage } from "./features/auth/pages/LoginPage"
-import { RegisterPage } from "./features/auth/pages/RegisterPage"
-import { PrivateRoute } from "./components/PrivateRoute"
-import { AuthenticatedLayout } from "./components/layouts/AuthenticatedLayout"
-import { DashboardPage } from "./features/dashboard/pages/DashboardPage"
-import { CategoriesPage } from "./features/categories/pages/CategoriesPage"
-import { TransactionsPage } from "./features/transactions/pages/TransactionsPage"
-import { TransactionFormPage } from "./features/transactions/pages/TransactionFormPage"
-import { Toaster } from "sonner"
-import { WorkspacesPage } from "./features/workspaces/pages/WorkspacesPage"
+import { Navigate, Route, Routes } from "react-router";
+import { LoginPage } from "./features/auth/pages/LoginPage";
+import { RegisterPage } from "./features/auth/pages/RegisterPage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { AuthenticatedLayout } from "./components/layouts/AuthenticatedLayout";
+import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
+import { CategoriesPage } from "./features/categories/pages/CategoriesPage";
+import { TransactionsPage } from "./features/transactions/pages/TransactionsPage";
+import { TransactionFormPage } from "./features/transactions/pages/TransactionFormPage";
+import { Toaster } from "sonner";
+import { WorkspacesPage } from "./features/workspaces/pages/WorkspacesPage";
 
 function App() {
-
   return (
     <>
       <Routes>
@@ -32,7 +31,7 @@ function App() {
       </Routes>
       <Toaster richColors position="top-center" />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

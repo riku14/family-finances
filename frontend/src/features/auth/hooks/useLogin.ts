@@ -23,13 +23,10 @@ export const useLogin = () => {
       // 個人ワークスペース（type: "PERSONAL")を取得して保存
       const personalWorkspace = workspaces.find((ws) => ws.type === "PERSONAL");
       if (personalWorkspace) {
-        localStorage.setItem(
-          "workspace_id",
-          String(personalWorkspace.workspaceId),
-        );
+        localStorage.setItem("workspace_id", String(personalWorkspace.workspaceId));
         localStorage.setItem(
           "workspace_name",
-          String(personalWorkspace.workspaceName ?? "個人ワークスペース"),
+          String(personalWorkspace.workspaceName ?? "個人ワークスペース")
         );
       }
       const redirect = searchParams.get("redirect");

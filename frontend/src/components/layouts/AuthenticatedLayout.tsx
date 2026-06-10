@@ -41,11 +41,8 @@ export const AuthenticatedLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const workspaceId = Number(localStorage.getItem("workspace_id"));
-  const workspaceName =
-    localStorage.getItem("workspace_name") ?? "個人ワークスペース";
-  const stored: WorkspaceSummary[] = JSON.parse(
-    localStorage.getItem("workspaces") ?? "[]",
-  );
+  const workspaceName = localStorage.getItem("workspace_name") ?? "個人ワークスペース";
+  const stored: WorkspaceSummary[] = JSON.parse(localStorage.getItem("workspaces") ?? "[]");
 
   const workspaces =
     stored.length > 0
@@ -82,26 +79,18 @@ export const AuthenticatedLayout = () => {
                     </div>
                     <div className="flex flex-col text-left text-sm leading-tight">
                       <span className="font-semibold">家計簿</span>
-                      <span className="text-xs text-muted-foreground">
-                        {workspaceName}
-                      </span>
+                      <span className="text-xs text-muted-foreground">{workspaceName}</span>
                     </div>
                     <ChevronsUpDown className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="bottom"
-                  align="start"
-                  className="w-56"
-                >
+                <DropdownMenuContent side="bottom" align="start" className="w-56">
                   {workspaces.map((ws) => (
                     <DropdownMenuItem
                       key={ws.workspaceId}
                       onClick={() => switchWorkspace(ws)}
                       disabled={ws.workspaceId === workspaceId}
-                      className={
-                        ws.workspaceId === workspaceId ? "font-semibold" : ""
-                      }
+                      className={ws.workspaceId === workspaceId ? "font-semibold" : ""}
                     >
                       <House />
                     </DropdownMenuItem>

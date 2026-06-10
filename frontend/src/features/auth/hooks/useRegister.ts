@@ -9,11 +9,7 @@ export const useRegister = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async (
-    name: string,
-    email: string,
-    password: string,
-  ) => {
+  const handleRegister = async (name: string, email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
