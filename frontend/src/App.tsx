@@ -9,6 +9,7 @@ import { TransactionsPage } from "./features/transactions/pages/TransactionsPage
 import { TransactionFormPage } from "./features/transactions/pages/TransactionFormPage";
 import { Toaster } from "sonner";
 import { WorkspacesPage } from "./features/workspaces/pages/WorkspacesPage";
+import { ProfilePage } from "./features/auth/pages/ProfilePage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/transactions/new" element={<TransactionFormPage />} />
             <Route path="/workspace" element={<WorkspacesPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
       </Routes>
