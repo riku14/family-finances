@@ -2,6 +2,7 @@ import type { components } from "@/api/schema";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -18,6 +19,9 @@ import {
   LayoutDashboard,
   Tag,
   Users,
+  LogOut,
+  User,
+  Settings,
 } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import {
@@ -43,6 +47,8 @@ export const AuthenticatedLayout = () => {
   const workspaceId = Number(localStorage.getItem("workspace_id"));
   const workspaceName = localStorage.getItem("workspace_name") ?? "個人ワークスペース";
   const stored: WorkspaceSummary[] = JSON.parse(localStorage.getItem("workspaces") ?? "[]");
+  const userName = localStorage.getItem("user_name") ?? "";
+  const userEmail = localStorage.getItem("user_email") ?? "";
 
   const workspaces =
     stored.length > 0
@@ -121,6 +127,42 @@ export const AuthenticatedLayout = () => {
             ))}
           </SidebarMenu>
         </SidebarContent>
+        <SidebarFooter className="p-2 [&_ul]:list-none">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton size="lg" tooltip={userName} className="py-5">
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-full bg-muted shrink-0">
+                      <User className="size-4" />
+                    </div>
+                    <div className="flex flex-col text-left text-sm leading-tight min-w-0">
+                      <span className="font-semibold truncate">{userName}</span>
+                      <span className="text-xs text-muted-foreground truncate">{userEmail}</span>
+                    </div>
+                    <ChevronsUpDown className="ml-auto shrink-0" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="top" align="start" className="w-56">
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    設定
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-destructive focus:text-destructive"
+                    onClick={() => {
+                      localStorage.clear();
+                      navigate("/login");
+                    }}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    ログアウト
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
       </Sidebar>
 
       {/* メインコンテンツ */}

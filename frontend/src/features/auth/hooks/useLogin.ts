@@ -16,6 +16,8 @@ export const useLogin = () => {
     try {
       const data = await login(email, password);
       localStorage.setItem("access_token", data.accessToken);
+      localStorage.setItem("user_name", data.name ?? "");
+      localStorage.setItem("user_email", data.email ?? "");
 
       const workspaces = data.workspaces ?? [];
       localStorage.setItem("workspaces", JSON.stringify(workspaces));

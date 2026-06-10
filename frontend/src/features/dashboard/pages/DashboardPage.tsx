@@ -2,9 +2,11 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/componen
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { useDashboard } from "../hooks/useDashboard";
+import { useNavigate } from "react-router";
 
 export const DashboardPage = () => {
   const { transactions, summary, loading, error } = useDashboard();
+  const navigate = useNavigate();
 
   if (loading) return <p>読み込み中...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -51,7 +53,12 @@ export const DashboardPage = () => {
         <CardHeader>
           <CardTitle>最近の取引</CardTitle>
           <CardAction>
-            <button className=" text-muted-foreground text-sm">すべて見る →</button>
+            <button
+              className="text-muted-foreground text-sm hover:underline"
+              onClick={() => navigate("/transactions")}
+            >
+              すべて見る →
+            </button>
           </CardAction>
         </CardHeader>
         <CardContent className="px-6 pb-6">
