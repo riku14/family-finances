@@ -293,6 +293,16 @@ paths:
           description: "取得成功（0件の場合は空配列）"
           content:
             application/json:
+              example:
+                workspaces:
+                  - workspaceId: 1
+                    workspaceName: 個人ワークスペース
+                    type: PERSONAL
+                    role: ADMIN
+                  - workspaceId: 2
+                    workspaceName: 家族の家計簿
+                    type: GROUP
+                    role: ADMIN
               schema:
                 type: object
                 properties:
@@ -946,6 +956,15 @@ components:
           example: "eyJhbGciOiJIUzI1NiJ9..."
         workspaces:
           type: array
+          example:
+            - workspaceId: 1
+              workspaceName: 個人ワークスペース
+              type: PERSONAL
+              role: ADMIN
+            - workspaceId: 2
+              workspaceName: 家族の家計簿
+              type: GROUP
+              role: ADMIN
           items:
             $ref: "#/components/schemas/WorkspaceSummary"
 
@@ -966,6 +985,15 @@ components:
           type: string
           enum: [ADMIN, MEMBER]
           example: ADMIN
+        workspaces:
+          type: array
+          example:
+            - workspaceId: 1
+              workspaceName: 個人ワークスペース
+              type: PERSONAL
+            - workspaceId: 2
+              workspaceName: グループ
+              type: GROUP
 
     WorkspaceMember:
       type: object

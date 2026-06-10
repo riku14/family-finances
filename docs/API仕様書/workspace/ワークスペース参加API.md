@@ -61,9 +61,9 @@ POST /api/workspaces/invitations/accept
 | workspaceName | String | ワークスペース名 |
 | type | String | ワークスペース種別（GROUP） |
 | members | Array | ワークスペースに所属しているメンバー一覧 |
-| &nbsp;&nbsp;&nbsp;&nbsp;└ userId | Integer | メンバーのユーザーID |
-| &nbsp;&nbsp;&nbsp;&nbsp;└ userName | String | メンバーの表示名（ニックネーム） |
-| &nbsp;&nbsp;&nbsp;&nbsp;└ role | String | ワークスペース内での権限（ADMIN / MEMBER） |
+| - userId | Integer | メンバーのユーザーID |
+| - userName | String | メンバーの表示名（ニックネーム） |
+| - role | String | ワークスペース内での権限（ADMIN / MEMBER） |
 
 ---
 

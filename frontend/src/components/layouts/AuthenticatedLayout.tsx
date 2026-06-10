@@ -1,3 +1,4 @@
+import type { components } from "@/api/schema";
 import {
   Sidebar,
   SidebarContent,
@@ -16,8 +17,9 @@ import {
   House,
   LayoutDashboard,
   Tag,
+  Users,
 } from "lucide-react";
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,16 +27,43 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
+type WorkspaceSummary = components["schemas"]["WorkspaceSummary"];
+
 const navItems = [
   { to: "/dashboard", label: "ダッシュボード", icon: LayoutDashboard },
   { to: "/transactions/new", label: "収支登録", icon: CirclePlus },
   { to: "/transactions", label: "収支履歴", icon: ArrowLeftRight },
   { to: "/categories", label: "カテゴリ", icon: Tag },
+  { to: "/workspace", label: "ワークスペース管理", icon: Users },
 ];
 
 export const AuthenticatedLayout = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const workspaceName = localStorage.getItem("workspace_name") ?? "個人ワークスペース";
+  const workspaceId = Number(localStorage.getItem("workspace_id"));
+  const workspaceName =
+    localStorage.getItem("workspace_name") ?? "個人ワークスペース";
+  const stored: WorkspaceSummary[] = JSON.parse(
+    localStorage.getItem("workspaces") ?? "[]",
+  );
+
+  const workspaces =
+    stored.length > 0
+      ? stored
+      : [
+          {
+            workspaceId,
+            workspaceName,
+            type: "PERSONAL" as const,
+            role: "ADMIN" as const,
+          },
+        ];
+  const switchWorkspace = (ws: WorkspaceSummary) => {
+    localStorage.setItem("workspace_id", String(ws.workspaceId));
+    localStorage.setItem("workspace_name", String(ws.workspaceName ?? ""));
+    navigate(0);
+  };
+
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
@@ -53,17 +82,30 @@ export const AuthenticatedLayout = () => {
                     </div>
                     <div className="flex flex-col text-left text-sm leading-tight">
                       <span className="font-semibold">家計簿</span>
-                      <span className="text-xs text-muted-foreground">{workspaceName}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {workspaceName}
+                      </span>
                     </div>
                     <ChevronsUpDown className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent side="bottom" align="start" className="w-56">
-                  {/* TODO: ワークスペース切り替え */}
-                  <DropdownMenuItem disabled>
-                    <House />
-                    {workspaceName}
-                  </DropdownMenuItem>
+                <DropdownMenuContent
+                  side="bottom"
+                  align="start"
+                  className="w-56"
+                >
+                  {workspaces.map((ws) => (
+                    <DropdownMenuItem
+                      key={ws.workspaceId}
+                      onClick={() => switchWorkspace(ws)}
+                      disabled={ws.workspaceId === workspaceId}
+                      className={
+                        ws.workspaceId === workspaceId ? "font-semibold" : ""
+                      }
+                    >
+                      <House />
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>

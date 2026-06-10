@@ -61,9 +61,9 @@ POST /api/workspaces
 | workspaceName | String | 作成されたワークスペース名 |
 | type | String | ワークスペース種別（GROUP） |
 | members | Array | ワークスペースのメンバー一覧。ID順で格納する。 |
-| &nbsp;&nbsp;&nbsp;&nbsp;└ userId | Integer | ユーザーID |
-| &nbsp;&nbsp;&nbsp;&nbsp;└ userName | String | ユーザー名 |
-| &nbsp;&nbsp;&nbsp;&nbsp;└ role | String | ワークスペース内権限（ADMIN / MEMBER） |
+| - userId | Integer | ユーザーID |
+| - userName | String | ユーザー名 |
+| - role | String | ワークスペース内権限（ADMIN / MEMBER） |
 
 ---
 
