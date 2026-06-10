@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   Tag,
   Users,
+  LogOut,
 } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import {
@@ -119,6 +120,24 @@ export const AuthenticatedLayout = () => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+          </SidebarMenu>
+        </SidebarContent>
+        <SidebarContent className="flex justify-end p-2 [&_ul]:list-none">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="ログアウト" className="py-5 mb-1">
+                <Link
+                  to="/login"
+                  className="no-underline hover:no-underline"
+                  onClick={() => {
+                    localStorage.clear();
+                  }}
+                >
+                  <LogOut />
+                  <span>ログアウト</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
       </Sidebar>
